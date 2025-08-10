@@ -1,10 +1,12 @@
 import { Routes, Route } from "react-router-dom"
-import RootPage from "./pages/LoginPage"
+import LoginPage from "./pages/LoginPage"
+import RegistroPage from "./pages/RegistroPage"
 
 function App() {
   return (
     <Routes>
-      <Route path="" element={<RootPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/registro" element={<RegistroPage />} />
     </Routes>
   )
 }
