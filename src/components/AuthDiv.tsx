@@ -96,7 +96,7 @@ function AuthDiv({ mode }: AuthDivProps) {
         ) : null}
         <button
           type="submit"
-          className="w-[25vw] bg-green-500 p-2 rounded-2xl transition-all duration-300 ease-in-out hover:scale-110 hover:cursor-pointer sm:w-[15vw] hover:shadow-[0px_15px_50px_0px]"
+          className="w-[25vw] bg-green-500 p-2 rounded-2xl transition-all duration-300 ease-in-out hover:scale-110 hover:cursor-pointer sm:w-[15vw] hover:shadow-[0px_15px_50px_0px] border-2 border-solid"
         >
           {mode == "registro" ? "Registrar" : "Login"}
         </button>

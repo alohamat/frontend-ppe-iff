@@ -11,7 +11,7 @@ function RootPage() {
       <div id="conteudo" className="flex flex-col-reverse sm:flex-row">
         <div
           id="servicosContainer"
-          className="flex flex-col w-[100vw] sm:w-[50vw] items-center gap-15 bg-stone-300 h-[93.8vh]"
+          className="flex flex-col w-[100vw] sm:w-[50vw] items-center just gap-15 bg-stone-300 h-[93.8vh]"
         >
           <h1 className="text-5xl font-bold mt-5">Outros Serviços</h1>
           <a href="https://academico.iff.edu.br/">
@@ -38,9 +38,9 @@ function RootPage() {
         </div>
         <div
           id="loginContainer"
-          className="w-[100vw] sm:w-[50vw] h-screen sm:h-[93.8vh] bg-green-900 flex items-center flex-col"
+          className="w-[100vw] sm:w-[50vw] h-screen sm:h-[93.8vh] bg-green-900 flex items-center justify-center flex-col "
         >
-          <h1 className="text-5xl font-bold mt-5 text-white">Cardápio IFF</h1>
+          <h1 className="text-5xl font-bold text-white">Cardápio IFF</h1>
           <h2 className="text4xl font-medium mb-10 text-white">
             Faça o seu login
           </h2>
@@ -48,7 +48,7 @@ function RootPage() {
           <h2 className="m-4 text-white text-2xl">Novo por aqui?</h2>
           <a
             href=""
-            className="text-blue-600 font-medium hover:underline"
+            className="text-white font-medium hover:underline mb-40"
             onClick={() => navigate("/registro")}
           >
             Registre-se
