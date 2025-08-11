@@ -8,7 +8,7 @@ function RootPage() {
   return (
     <div id="all">
       <Header />
-      <div id="conteudo" className="flex flex-col sm:flex-row">
+      <div id="conteudo" className="flex flex-col-reverse sm:flex-row">
         <div
           id="servicosContainer"
           className="flex flex-col w-[100vw] sm:w-[50vw] items-center gap-15 bg-stone-300 h-[93.8vh]"
