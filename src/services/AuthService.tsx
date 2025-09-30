@@ -1,30 +1,36 @@
-import axios from "axios";
+// AuthService.ts
+import api from "./ApiService";
 
-type RegistroUsuario = {
-    matricula: string
-    senha: string
-    email: string
-    nome: string
-    sobrenome: string
-    podeAlmocar: boolean
+export type RegistroUsuario = {
+  matricula: string;
+  senha: string;
+  email: string;
+  nome: string;
+  sobrenome: string;
+  podeAlmocar: boolean;
 };
 
-type LoginUsuario = {
-    matricula: string
-    senha: string
+export type LoginUsuario = {
+  matricula: string;
+  senha: string;
 };
 
+type LoginResponse = {
+  token: string;
+  user?: any;
+};
 
-function RegisterService({matricula, senha, email, nome, sobrenome, podeAlmocar}: RegistroUsuario) {
-    console.log("register");
-    const obj = {matricula, senha, email, nome, sobrenome, podeAlmocar};
-    console.log(obj);
-
+async function register(data: RegistroUsuario) {
+  const resp = await api.post("/aluno/register", data);
+  return resp.data;
 }
 
-function LoginService({matricula, senha}: LoginUsuario) {
-    const obj = {matricula, senha};
-    console.log(obj);
+async function login(creds: LoginUsuario): Promise<LoginResponse> {
+  const resp = await api.post("/aluno/login", creds);
+  return resp.data;
 }
 
-export default {RegisterService, LoginService};
+export default {
+  register,
+  login,
+};

@@ -1,17 +1,18 @@
 import InputForm from "./InputForm";
 import { useState } from "react";
-import AuthService from "../services/AuthService";
+import { useAuth } from "../context/AuthContext";
 
 type AuthDivProps = {
   mode: string;
 };
 
 function AuthDiv({ mode }: AuthDivProps) {
+  const { login, register } = useAuth();
   function senhaIncorreta() {
     alert("senha incorreta");
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
     if (mode === "registro") {
@@ -19,16 +20,28 @@ function AuthDiv({ mode }: AuthDivProps) {
         senhaIncorreta();
         return;
       }
-      AuthService.RegisterService({
-        matricula,
-        senha,
-        email,
-        nome,
-        sobrenome,
-        podeAlmocar,
-      });
+      try {
+        const data = await register({
+          matricula,
+          senha,
+          email,
+          nome,
+          sobrenome,
+          podeAlmocar,
+        });
+        console.log(data);
+      } catch (err: any) {
+        console.error(err);
+        alert(err.response?.data?.message || "Erro no registro");
+      }
     } else {
-      AuthService.LoginService({ matricula, senha });
+      try {
+        const data = await login({ matricula, senha });
+        console.log(data);
+      } catch (err: any) {
+        console.error(err);
+        alert(err.response?.data?.message || "Erro no registro");
+      }
     }
   }
   const [matricula, setMatricula] = useState("");
@@ -41,7 +54,10 @@ function AuthDiv({ mode }: AuthDivProps) {
 
   return (
     <div>
-      <form className="flex flex-col items-center gap-5" onSubmit={handleSubmit}>
+      <form
+        className="flex flex-col items-center gap-5"
+        onSubmit={handleSubmit}
+      >
         <InputForm
           placeholder="Matrícula"
           onChange={(e) => setMatricula(e.target.value)}
@@ -60,10 +76,10 @@ function AuthDiv({ mode }: AuthDivProps) {
         ) : null}
         {mode == "registro" ? (
           <InputForm
-          placeholder="E-mail"
-          type="email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
+            placeholder="E-mail"
+            type="email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
         ) : null}
         {mode == "registro" ? (
           <InputForm
