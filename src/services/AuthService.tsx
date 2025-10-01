@@ -1,4 +1,3 @@
-// AuthService.ts
 import api from "./ApiService";
 
 export type RegistroUsuario = {

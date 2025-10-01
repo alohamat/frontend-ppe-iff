@@ -10,7 +10,7 @@ function Header() {
       <img src="src/assets/IFF-MOBILE.jpg" alt="IFF" onClick={() => navigate("/main")} className="h-[50px] rounded-4xl block sm:hidden ml-5"/>
       <h1 className="ml-5 text-3xl text-white font-bold sm:ml-45">Cardápio Digital</h1>
       {isAuthenticated &&
-       <h1>
+       <h1 className="ml-5 text-3xl text-white font-bold sm:ml-45">
         Olá, {user?.nome}!  
       </h1>
         }

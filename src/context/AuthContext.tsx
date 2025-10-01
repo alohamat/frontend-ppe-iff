@@ -1,11 +1,4 @@
-// AuthContext.tsx
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import type { LoginUsuario, RegistroUsuario } from "../services/AuthService";
 import { useNavigate } from "react-router-dom";
@@ -18,6 +11,8 @@ type User = {
   nome?: string;
   sobrenome?: string;
   roles?: string[];
+  // displayname pode entrar tambem se necessario
+  displayName?: string;
 };
 
 type AuthContextType = {
@@ -39,21 +34,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return raw ? JSON.parse(raw) : null;
   });
 
+  // quando token muda, atualiza header default do axios
   useEffect(() => {
     if (token) {
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      console.log("AuthProvider: Authorization header set");
     } else {
       delete api.defaults.headers.common["Authorization"];
+      console.log("AuthProvider: Authorization header removed");
     }
   }, [token]);
 
-  // interceptor para logout em 401
+  // interceptor global para 401 limpa auth
   useEffect(() => {
     const interceptor = api.interceptors.response.use(
       (res) => res,
       (error) => {
-        if (error.response && error.response.status === 401) {
-          // token expirou ou inválido
+        if (error?.response?.status === 401) {
+          console.warn("Interceptor: 401 recebido -> deslogando");
           clearAuth();
         }
         return Promise.reject(error);
@@ -64,12 +62,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
   }, []);
 
-  const persistAuth = (t: string, u: User | null) => {
+  const persistAuth = (t: string | null, u: User | null) => {
     setToken(t);
     setUser(u);
-    localStorage.setItem("token", t);
-    if (u) localStorage.setItem("user", JSON.stringify(u));
-    else localStorage.removeItem("user");
+    if (t) {
+      localStorage.setItem("token", t);
+    } else {
+      localStorage.removeItem("token");
+    }
+    if (u) {
+      // displayname pra usar em navbar e etc
+      const displayName = `${u.nome ?? ""}${u.sobrenome ? " " + u.sobrenome : ""}`.trim();
+      const toSave = { ...u, displayName };
+      setUser(toSave);
+      localStorage.setItem("user", JSON.stringify(toSave));
+    } else {
+      setUser(null);
+      localStorage.removeItem("user");
+    }
+    console.log("persistAuth -> token salvo (len):", t ? t.length : 0);
   };
 
   const clearAuth = () => {
@@ -78,26 +89,60 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     delete api.defaults.headers.common["Authorization"];
-    try { navigate("/login"); } catch (e) { /* nada */ }
+    try { navigate("/login"); } catch (e) { /* ignore */ }
+  };
+
+  const fetchUser = async (explicitToken?: string): Promise<User | null> => {
+    try {
+      if (explicitToken) {
+        console.log("fetchUser usando token explícito, setando header temporário");
+      } else {
+        console.log("fetchUser usando header default");
+      }
+
+      const resp = await api.get("/aluno/detalhes", {
+        headers: explicitToken ? { Authorization: `Bearer ${explicitToken}` } : undefined,
+      });
+      console.log("fetchUser OK:", resp.data);
+      return resp.data as User;
+    } catch (err: any) {
+      console.error("fetchUser erro:", err?.response?.status, err?.message);
+      if (err?.response?.status === 403) {
+        console.warn("fetchUser -> 403: token válido mas sem permissão (verifique roles/ativação no backend).");
+      }
+      return null;
+    }
   };
 
   const login = async (creds: LoginUsuario) => {
-    // authservicelogin retornar token, user
     const data = await AuthService.login(creds);
-    if (!data || !data.token) throw new Error("Resposta do servidor sem token");
-    persistAuth(data.token, data.user ?? null);
-    // redireciona pra home
+    if (!data?.token) throw new Error("Resposta do servidor sem token");
+    // persiste token e busca user
+    persistAuth(data.token, null);
+    // tenta fetch com token explícito (garante header)
+    const u = await fetchUser(data.token);
+    if (u) persistAuth(data.token, u);
     navigate("/main");
   };
 
   const register = async (dados: RegistroUsuario) => {
-    console.log("register chamado, nome?: ", dados.nome);
     const data = await AuthService.register(dados);
-    if (data.token) {
-      persistAuth(data.token, data.user ?? null);
+    if (!data?.token) {
+      navigate("/login?registered=1");
+      return;
+    }
+    // garante persistencia consistente
+    persistAuth(data.token, null);
+    console.log("register -> token salvo, tentando fetchUser (com token explícito)");
+    const u = await fetchUser(data.token);
+
+    if (u) {
+      persistAuth(data.token, u);
       navigate("/main");
     } else {
-      // registra e redireciona pro login
+      console.warn("register -> fetchUser retornou null (possível 403).");
+      // opcional: você pode limpar auth para forçar login
+      // clearAuth();
       navigate("/login?registered=1");
     }
   };
@@ -123,6 +168,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 export function useAuth() {
   const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error("useAuth must be used within AuthProvider");
+  if (!ctx) throw new Error("useauth tem que ser usado dentro de authcontext");
   return ctx;
 }
