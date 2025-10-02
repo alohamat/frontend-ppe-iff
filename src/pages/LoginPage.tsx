@@ -1,58 +1,51 @@
 import Header from "../components/Header";
 import AuthDiv from "../components/AuthDiv";
 import { useNavigate } from "react-router-dom";
+import Img from "../components/Img";
+
+import AcademicoImg from "../assets/Academico.jpg"
+import MoodleImg from "../assets/Moodle.jpg"
+import SuapImg from "../assets/Suap.jpg"
 
 function RootPage() {
   const navigate = useNavigate();
 
   return (
-    <div id="all">
+    <div id="all" className="flex flex-col min-h-screen">
       <Header />
-      <div id="conteudo" className="flex flex-col-reverse sm:flex-row">
+
+      {/* conteúdo empilha em telas pequenas, lado a lado em lg pra cima */}
+      <div id="conteudo" className="flex flex-col-reverse lg:flex-row flex-1 w-full">
+        {/* servicoes full width no mobile/tablet, metade no desktop */}
         <div
           id="servicosContainer"
-          className="flex flex-col w-[100vw] sm:w-[50vw] items-center just gap-15 bg-stone-300 h-[93.8vh]"
+          className="flex flex-col items-center gap-6 bg-stone-300 p-6 w-full lg:w-1/2"
         >
-          <h1 className="text-5xl font-bold mt-5">Outros Serviços</h1>
-          <a href="https://academico.iff.edu.br/">
-            <img
-              src="src/assets/Academico.jpg"
-              alt="Imagem Academico"
-              className="h-[15vh] hover:cursor-pointer shadow-[0_15px_90px_0px] hover:shadow-[0_15px_90px_10px] transition ease-in-out duration-300 rounded-xl"
-            />
-          </a>
-          <a href="https://ead2.iff.edu.br/login/index.php">
-            <img
-              src="src/assets/Moodle.jpg"
-              alt="Imagem Moodle"
-              className="h-[15vh] hover:cursor-pointer shadow-[0_15px_90px_0px] hover:shadow-[0_15px_90px_10px] transition ease-in-out duration-300 rounded-xl"
-            />
-          </a>
-          <a href="https://suap.iff.edu.br/accounts/login/?next=/">
-            <img
-              src="src/assets/Suap.jpg"
-              alt="Imagem Suap"
-              className="h-[15vh] hover:cursor-pointer shadow-[0_15px_90px_0px] hover:shadow-[0_15px_90px_10px] transition ease-in-out duration-300 rounded-xl"
-            />
-          </a>
+          <h1 className="text-2xl md:text-4xl font-bold mt-2">Outros Serviços</h1>
+          <Img src={AcademicoImg} alt="Imagem Academico" link="https://academico.iff.edu.br/" />
+          <Img src={MoodleImg} alt="Imagem Moodle" link="https://ead2.iff.edu.br/login/index.php" />
+          <Img src={SuapImg} alt="Imagem Suap" link="https://suap.iff.edu.br/accounts/login/?next=/" />
         </div>
+
+        {/* login tbm full width no mobile/tablet, metade no desktop */}
         <div
           id="loginContainer"
-          className="w-[100vw] sm:w-[50vw] h-screen sm:h-[93.8vh] bg-green-900 flex items-center justify-center flex-col "
+          className="bg-green-900 flex items-center justify-center flex-col p-8 w-full lg:w-1/2"
         >
-          <h1 className="text-5xl font-bold text-white">Cardápio IFF</h1>
-          <h2 className="text4xl font-medium mb-10 text-white">
-            Faça o seu login
-          </h2>
-          <AuthDiv mode="login" />
-          <h2 className="m-4 text-white text-2xl">Novo por aqui?</h2>
-          <a
-            href=""
-            className="text-white font-medium hover:underline mb-40"
+          <h1 className="text-3xl md:text-5xl font-bold text-white">Cardápio IFF</h1>
+          <h2 className="text-lg md:text-2xl font-medium mb-6 text-white">Faça o seu login</h2>
+
+          <div className="w-full max-w-md">
+            <AuthDiv mode="login" />
+          </div>
+
+          <h2 className="mt-4 text-white text-lg">Novo por aqui?</h2>
+          <button
             onClick={() => navigate("/registro")}
+            className="mt-2 text-white font-medium hover:underline"
           >
             Registre-se
-          </a>
+          </button>
         </div>
       </div>
     </div>
