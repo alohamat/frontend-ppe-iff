@@ -1,7 +1,7 @@
 import Header from "../components/Header";
 import AuthDiv from "../components/AuthDiv";
 import { useNavigate } from "react-router-dom";
-import Img from "../components/Img";
+import Img from "../components/LinkImg";
 
 import AcademicoImg from "../assets/Academico.jpg"
 import MoodleImg from "../assets/Moodle.jpg"
@@ -19,18 +19,18 @@ function RootPage() {
         {/* servicoes full width no mobile/tablet, metade no desktop */}
         <div
           id="servicosContainer"
-          className="flex flex-col items-center gap-6 bg-stone-300 p-6 w-full lg:w-1/2"
+          className="flex flex-col items-center gap-6 bg-gradient-to-b from-stone-300 to-stone-400 p-6 w-full lg:w-1/2"
         >
           <h1 className="text-2xl md:text-4xl font-bold mt-2">Outros Serviços</h1>
-          <Img src={AcademicoImg} alt="Imagem Academico" link="https://academico.iff.edu.br/" />
-          <Img src={MoodleImg} alt="Imagem Moodle" link="https://ead2.iff.edu.br/login/index.php" />
-          <Img src={SuapImg} alt="Imagem Suap" link="https://suap.iff.edu.br/accounts/login/?next=/" />
+          <Img src={AcademicoImg} alt="Imagem Academico" link="https://academico.iff.edu.br/" size="big" />
+          <Img src={MoodleImg} alt="Imagem Moodle" link="https://ead2.iff.edu.br/login/index.php"size="big" />
+          <Img src={SuapImg} alt="Imagem Suap" link="https://suap.iff.edu.br/accounts/login/?next=/" size="big" />
         </div>
 
         {/* login tbm full width no mobile/tablet, metade no desktop */}
         <div
           id="loginContainer"
-          className="bg-green-900 flex items-center justify-center flex-col p-8 w-full lg:w-1/2"
+          className="bg-gradient-to-b from-green-900 to-green-950 flex items-center justify-center flex-col p-8 w-full lg:w-1/2"
         >
           <h1 className="text-3xl md:text-5xl font-bold text-white">Cardápio IFF</h1>
           <h2 className="text-lg md:text-2xl font-medium mb-6 text-white">Faça o seu login</h2>
@@ -42,7 +42,7 @@ function RootPage() {
           <h2 className="mt-4 text-white text-lg">Novo por aqui?</h2>
           <button
             onClick={() => navigate("/registro")}
-            className="mt-2 text-white font-medium hover:underline"
+            className="mt-2 text-white font-medium hover:underline hover:cursor-pointer"
           >
             Registre-se
           </button>
