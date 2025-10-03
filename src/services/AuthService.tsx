@@ -6,7 +6,7 @@ export type RegistroUsuario = {
   email: string;
   nome: string;
   sobrenome: string;
-  podeAlmocar: boolean;
+  podeAlmocar: string;
 };
 
 export type LoginUsuario = {

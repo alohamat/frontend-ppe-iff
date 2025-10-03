@@ -50,7 +50,7 @@ function AuthDiv({ mode }: AuthDivProps) {
   const [email, setEmail] = useState("");
   const [nome, setNome] = useState("");
   const [sobrenome, setSobrenome] = useState("");
-  const [podeAlmocar, setPodeAlmocar] = useState(false);
+  const [podeAlmocar, setPodeAlmocar] = useState("");
 
   return (
     <div>
@@ -101,7 +101,7 @@ function AuthDiv({ mode }: AuthDivProps) {
             <select
               className="bg-white p-2 rounded-2xl focus:scale-110 transition-all duration-150 ease-in-out border-2 border-solid"
               onChange={(e) =>
-                setPodeAlmocar(e.target.value === "sim" ? true : false)
+                setPodeAlmocar(e.target.value === "sim" ? "sim" : "nao")
               }
             >
               <option value="n/a"> --- </option>
