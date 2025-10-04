@@ -1,6 +1,8 @@
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
+import IFFMobile from "../assets/IFF-MOBILE.jpg"
+import IFFPc2 from "../assets/IFF-PC2.jpg"
 
 function Header() {
   const { user, isAuthenticated } = useAuth();
@@ -18,12 +20,12 @@ function Header() {
         onClick={() => navigate("/main")}
       >
         <img
-          src="src/assets/IFF-PC2.jpg"
+          src={IFFPc2}
           alt="IFF"
           className="hidden sm:block h-12 rounded-xl"
         />
         <img
-          src="src/assets/IFF-MOBILE.jpg"
+          src={IFFMobile}
           alt="IFF"
           className="block sm:hidden h-12 rounded-xl"
         />
