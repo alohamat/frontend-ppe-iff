@@ -1,5 +1,6 @@
 import Header from "../components/Header";
 import AuthDiv from "../components/AuthDiv";
+import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
 import { ServicoCard } from "../components/ServicesCard";
 
@@ -20,27 +21,24 @@ function RootPage() {
         {/* servicoes full width no mobile/tablet, metade no desktop */}
         <div
           id="servicosContainer"
-          className="flex flex-col items-center gap-6 bg-gradient-to-b from-stone-300 to-stone-400 p-6 w-full lg:w-1/2"
+          className="flex flex-col items-center gap-10 bg-gradient-to-b from-green-800/50 to-gray-700/50p-6 w-full lg:w-1/2"
         >
-          <h1 className="text-2xl md:text-4xl font-bold mt-2">
+          <h1 className="text-2xl md:text-4xl font-bold mt-2 text-black/55">
             Outros Serviços
           </h1>
           <ServicoCard
             nome="Acadêmico"
             url="https://academico.iff.edu.br/"
-            gradient="bg-gradient-to-br from-orange-400 to-red-500"
             size="big"
           />
           <ServicoCard
             nome="Moodle"
             url="https://ead2.iff.edu.br/login/index.php"
-            gradient="bg-gradient-to-br from-blue-500 to-purple-600"
             size="big"
           />
           <ServicoCard
             nome="SUAP"
             url="https://suap.iff.edu.br/accounts/login/?next=/"
-            gradient="bg-gradient-to-br from-green-500 to-emerald-700"
             size="big"
           />
         </div>
@@ -70,6 +68,7 @@ function RootPage() {
           </button>
         </div>
       </div>
+    <Footer />
     </div>
   );
 }

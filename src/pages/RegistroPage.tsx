@@ -1,5 +1,6 @@
 import AuthDiv from "../components/AuthDiv";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 function RegistroPage() {
     return (
@@ -9,6 +10,7 @@ function RegistroPage() {
                 <h1 className="m-15 font-bold text-4xl">Registro</h1>
                 <AuthDiv mode="registro" />
             </div>
+            <Footer />
         </div>
     )
 }

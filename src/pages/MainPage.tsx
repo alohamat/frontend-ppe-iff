@@ -1,4 +1,5 @@
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 function MainPage(){
 
@@ -10,6 +11,7 @@ function MainPage(){
                     <h1 className="text-5xl flex font-bold mt-10">Cardápio da Semana:</h1>
                 </div>
             </div>
+            <Footer />
         </div>
     )
 }

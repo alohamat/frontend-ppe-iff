@@ -1,19 +1,16 @@
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import Img from "./LinkImg";
-import QuickLinks from "./QuickLinks";
 
-import ExitImg from "../assets/exit.png";
 
 function Header() {
-  const { user, logout, isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   
   return (
     <header
       className="bg-gradient-to-b from-green-700 to-green-800 
-                   flex items-center justify-between 
-                   px-4 py-3 shadow-md flex-col sm:flex-row gap-2"
+                   flex flex-col sm:flex-row items-center justify-between 
+                   px-4 py-3 shadow-md gap-2"
     >
       {/* logo */}
       <div
@@ -30,14 +27,16 @@ function Header() {
           alt="IFF"
           className="block sm:hidden h-12 rounded-xl"
         />
+      </div>
         <h1 className="text-xl sm:text-2xl text-white font-bold">
           Cardápio Digital
         </h1>
-      </div>
 
       {/* centro */}
       <div className="flex items-center gap-4">
+        { isAuthenticated && (
           <p className="text-white font-bold sm:text-xl ">Olá, {user?.nome}!</p>
+        )}
         <div className="flex gap-3 mt-1">
           {/* <button 
         onClick={() => navigate("/about")}
@@ -48,14 +47,6 @@ function Header() {
       </div>
 
       {/* direita */}
-      <div className="flex items-center gap-4">
-        <QuickLinks />
-        {isAuthenticated && (
-          <span className="flex justify-between w-full items-center">
-            <Img src={ExitImg} alt="Sair" size="small" funcao={logout} />
-          </span>
-        )}
-      </div>
     </header>
   );
 }
