@@ -100,7 +100,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         console.log("fetchUser usando header default");
       }
 
-      const resp = await api.get("/aluno/detalhes", {
+      const resp = await api.get("/alunos/detalhes", {
         headers: explicitToken ? { Authorization: `Bearer ${explicitToken}` } : undefined,
       });
       console.log("fetchUser OK:", resp.data);
