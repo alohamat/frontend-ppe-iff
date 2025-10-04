@@ -20,12 +20,12 @@ type LoginResponse = {
 };
 
 async function register(data: RegistroUsuario) {
-  const resp = await api.post("/aluno/register", data);
+  const resp = await api.post("/alunos/register", data);
   return resp.data;
 }
 
 async function login(creds: LoginUsuario): Promise<LoginResponse> {
-  const resp = await api.post("/aluno/login", creds);
+  const resp = await api.post("/alunos/login", creds);
   return resp.data;
 }
 
