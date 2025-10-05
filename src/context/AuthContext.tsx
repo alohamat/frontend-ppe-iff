@@ -93,26 +93,29 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const fetchUser = async (explicitToken?: string): Promise<User | null> => {
-    try {
-      if (explicitToken) {
-        console.log("fetchUser usando token explícito, setando header temporário");
-      } else {
-        console.log("fetchUser usando header default");
-      }
+  try {
+    const headers = explicitToken ? { Authorization: `Bearer ${explicitToken}` } : undefined;
 
-      const resp = await api.get("/alunos/detalhes", {
-        headers: explicitToken ? { Authorization: `Bearer ${explicitToken}` } : undefined,
-      });
-      console.log("fetchUser OK:", resp.data);
+    // tenta aluno primeiro
+    let resp;
+    try {
+      resp = await api.get("alunos/detalhes", { headers });
       return resp.data as User;
-    } catch (err: any) {
-      console.error("fetchUser erro:", err?.response?.status, err?.message);
-      if (err?.response?.status === 403) {
-        console.warn("fetchUser -> 403: token válido mas sem permissão (verifique roles/ativação no backend).");
-      }
-      return null;
-    }
-  };
+    } catch {}
+
+    // tenta servidor
+    try {
+      resp = await api.get("servidores/detalhes", { headers });
+      return resp.data as User;
+    } catch {}
+
+    return null;
+  } catch (err: any) {
+    console.error("fetchUser erro:", err);
+    return null;
+  }
+};
+
 
   const login = async (creds: LoginUsuario) => {
     const data = await AuthService.login(creds);
@@ -128,7 +131,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const register = async (dados: RegistroUsuario) => {
     const data = await AuthService.register(dados);
     if (!data?.token) {
-      navigate("/login?registered=1");
+      navigate("login?registered=1");
       return;
     }
     // garante persistencia consistente
@@ -143,7 +146,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       console.warn("register -> fetchUser retornou null (possível 403).");
       // opcional: você pode limpar auth para forçar login
       // clearAuth();
-      navigate("/login?registered=1");
+      navigate("login?registered=1");
     }
   };
 
