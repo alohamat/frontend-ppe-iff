@@ -3,9 +3,11 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import RegistroPage from "./pages/RegistroPage";
 import MainPage from "./pages/MainPage";
+import AdminPage from "./pages/AdminPage";
 
-import PrivateRoute from "./components/PrivateRoute";
-import PublicRoute from "./components/PublicRoute";
+import PrivateRoute from "./routes/PrivateRoute";
+import PublicRoute from "./routes/PublicRoute";
+import AdminRoute from "./routes/AdminRoute";
 import { AuthProvider } from "./context/AuthContext";
 
 function App() {
@@ -19,6 +21,9 @@ function App() {
         </Route>
         <Route element={<PrivateRoute />}>
           <Route path="/main" element={<MainPage />} />
+        </Route>
+        <Route element={<AdminRoute />}>
+          <Route element={<AdminPage />} />
         </Route>
       </Routes>
     </AuthProvider>
