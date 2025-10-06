@@ -40,7 +40,7 @@ export default function Cardapio({ cardapio, loading }: Props) {
 
               return (
                 <div key={tipo} style={{ marginBottom: 20, padding: 10, border: "1px solid #ccc", borderRadius: 8 }}>
-                  <h3>{tipo === "almoco" ? "Almoço" : tipo === "cafe" ? "Café" : "Lanche"}</h3>
+                  <h3>{tipo === "almoco" ? <><LunchIcon/> Almoço </> : tipo === "cafe" ? <><BreakfastIcon /> Café </> : <> <SnackIcon /> Lanche  </> }</h3>
                   {arr.map((r, idx) => (
                     <div key={idx} style={{ marginLeft: 10 }}>
                       <p> Comida: {r.comida ?? "—"}</p>
