@@ -1,7 +1,6 @@
 import { BreakfastIcon } from "../assets/icons/Icons";
 import { LunchIcon } from "../assets/icons/Icons";
 import { SnackIcon } from "../assets/icons/Icons";
-import { DinnerIcon } from "../assets/icons/Icons";
 
 type Refeicao = {
   comida?: string;

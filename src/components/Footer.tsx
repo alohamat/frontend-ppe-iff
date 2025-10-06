@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "../context/AuthContext";
 import QuickLinks from "./QuickLinks";
-import Img from "./LinkImg";
 
 import { ExitIcon } from "../assets/icons/Icons";
 import { UserIcon } from "../assets/icons/Icons";
