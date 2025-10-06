@@ -1,3 +1,7 @@
+import { BreakfastIcon } from "../assets/icons/Icons";
+import { LunchIcon } from "../assets/icons/Icons";
+import { SnackIcon } from "../assets/icons/Icons";
+import { DinnerIcon } from "../assets/icons/Icons";
 
 type Refeicao = {
   comida?: string;
@@ -39,8 +43,8 @@ export default function Cardapio({ cardapio, loading }: Props) {
                   <h3>{tipo === "almoco" ? "Almoço" : tipo === "cafe" ? "Café" : "Lanche"}</h3>
                   {arr.map((r, idx) => (
                     <div key={idx} style={{ marginLeft: 10 }}>
-                      <p>🍛 Comida: {r.comida ?? "—"}</p>
-                      <p>🧃 Bebida: {r.bebida ?? "—"}</p>
+                      <p> Comida: {r.comida ?? "—"}</p>
+                      <p> Bebida: {r.bebida ?? "—"}</p>
                     </div>
                   ))}
                 </div>

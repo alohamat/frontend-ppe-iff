@@ -4,8 +4,8 @@ import { useAuth } from "../context/AuthContext";
 import QuickLinks from "./QuickLinks";
 import Img from "./LinkImg";
 
-import ExitImg from "../assets/exit.png"
-import UserImg from "../assets/user.png"
+import { ExitIcon } from "../assets/icons/Icons";
+import { UserIcon } from "../assets/icons/Icons";
 
 function Footer() {
     const { logout, isAuthenticated } = useAuth();
@@ -17,11 +17,11 @@ function Footer() {
         { isAuthenticated && (
             <div className="flex items-center">
                 <span className="hover:cursor-pointer flex items-center" onClick={logout}>
-                    <Img src={ExitImg} alt="Sair" size="small" />   
+                    <ExitIcon /> 
                     <p className="font-bold mr-5">Sair</p>
                 </span>
-                <span className="hover:cursor-pointer flex items-center" onClick={() => {navigate("/about")}}>
-                    <Img src={UserImg} alt="Sobre" size="small" />
+                <span className="hover:cursor-pointer flex items-center mr-3" onClick={() => {navigate("/about")}}>
+                    <UserIcon />
                     <p className="font-bold">Sobre nós</p>
                 </span>
             </div>

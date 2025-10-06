@@ -1,8 +1,8 @@
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-import IFFMobile from "../assets/IFF-MOBILE.jpg"
-import IFFPc2 from "../assets/IFF-PC2.jpg"
+import IFFMobile from "../assets/images/IFF-MOBILE.jpg"
+import IFFPc2 from "../assets/images/IFF-PC2.jpg"
 
 function Header() {
   const { user, isAuthenticated } = useAuth();
