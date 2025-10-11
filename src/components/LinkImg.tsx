@@ -25,7 +25,7 @@ function Img({
   const navigate = useNavigate();
 
   const sizeClasses: Record<typeof size, string> = {
-    small: "h-12",
+    small: "h-10",
     medium: "h-20",
     big: "h-42",
   };

@@ -1,7 +1,8 @@
 import Api from "./ApiService";
+import type { CardapioData } from "../components/Cardapio";
 
 const novoCardapio = {
-  data: "2025-01-10",
+  data: "2025-01-25",
   refeicoes: [
     {
       tipo_refeicao: "almoco",
@@ -35,4 +36,20 @@ export async function criarCardapio() {
   }
 }
 
-criarCardapio();
+
+export async function getCardapiosDeHoje(): Promise<CardapioData[]> {
+  const token = localStorage.getItem("token");
+  try {
+    const res = await Api.get("cardapios/hoje", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    return res.data.cardapios; // pega o array dentro do objeto
+  } catch (err: any) {
+    console.error("Erro ao puxar cardápios", err.response?.data || err.message);
+    return [];
+  }
+}
+

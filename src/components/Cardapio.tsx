@@ -1,10 +1,9 @@
-import { BreakfastIcon } from "../assets/icons/Icons";
-import { RestaurantIcon } from "../assets/icons/Icons";
-import { SnackIcon } from "../assets/icons/Icons";
+import { BreakfastIcon, RestaurantIcon, SnackIcon } from "../assets/icons/Icons";
 
 type Refeicao = {
   comida?: string;
   bebida?: string;
+  subtipo?: string; // só para almoço
 };
 
 // backend
@@ -13,6 +12,7 @@ export type CardapioData = {
   almoco?: Refeicao[];
   cafe?: Refeicao[];
   lanche?: Refeicao[];
+  janta?: Refeicao[];
 };
 
 // frontend
@@ -24,32 +24,41 @@ type Props = {
 export default function Cardapio({ cardapio, loading }: Props) {
   if (!cardapio) return <p>Nenhum cardápio disponível</p>;
 
+  const formatarData = (data: string) => new Date(data).toLocaleDateString();
+
+  const renderRefeicoes = (tipo: keyof CardapioData, titulo: string, Icon: any) => {
+    const arr = cardapio[tipo];
+    if (!Array.isArray(arr) || arr.length === 0) return null;
+
+    return (
+      <div style={{ marginBottom: 20, padding: 12, border: "1px solid #ccc", borderRadius: 8 }}>
+        <h3 style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <Icon /> {titulo}
+        </h3>
+        {arr.map((r, idx) => (
+          <div key={idx} style={{ marginLeft: 10 }}>
+            {r.subtipo && <strong>{r.subtipo.charAt(0).toUpperCase() + r.subtipo.slice(1)}: </strong>}
+            <span>Comida: {r.comida ?? "—"} | Bebida: {r.bebida ?? "—"}</span>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
   return (
     <>
       {loading ? (
         <h1>Carregando...</h1>
       ) : (
         <div style={{ maxWidth: 600, margin: "0 auto" }}>
-          <h2 style={{ textAlign: "center" }}>Cardápio do dia {new Date().toLocaleDateString()}</h2>
+          <h2 style={{ textAlign: "center", marginBottom: 20 }}>
+            Cardápio do dia {formatarData(cardapio.dia)}
+          </h2>
 
-          <div>
-            {["almoco", "cafe", "lanche"].map((tipo) => {
-              const arr = cardapio[tipo as keyof CardapioData] as Refeicao[] | undefined;
-              if (!arr || arr.length === 0) return null;
-
-              return (
-                <div key={tipo} style={{ marginBottom: 20, padding: 10, border: "1px solid #ccc", borderRadius: 8 }}>
-                  <h3>{tipo === "almoco" ? <><RestaurantIcon/> Almoço </> : tipo === "cafe" ? <><BreakfastIcon /> Café </> : <> <SnackIcon /> Lanche  </> }</h3>
-                  {arr.map((r, idx) => (
-                    <div key={idx} style={{ marginLeft: 10 }}>
-                      <p> Comida: {r.comida ?? "—"}</p>
-                      <p> Bebida: {r.bebida ?? "—"}</p>
-                    </div>
-                  ))}
-                </div>
-              );
-            })}
-          </div>
+          {renderRefeicoes("cafe", "Café", BreakfastIcon)}
+          {renderRefeicoes("almoco", "Almoço", RestaurantIcon)}
+          {renderRefeicoes("lanche", "Lanche", SnackIcon)}
+          {renderRefeicoes("janta", "Janta", RestaurantIcon)}
         </div>
       )}
     </>
