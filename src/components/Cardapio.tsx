@@ -12,7 +12,7 @@ export type CardapioData = {
   almoco?: Refeicao[];
   cafe?: Refeicao[];
   lanche?: Refeicao[];
-  janta?: Refeicao[];
+  jantar?: Refeicao[];
 };
 
 // frontend
@@ -26,24 +26,53 @@ export default function Cardapio({ cardapio, loading }: Props) {
 
   const formatarData = (data: string) => new Date(data).toLocaleDateString();
 
-  const renderRefeicoes = (tipo: keyof CardapioData, titulo: string, Icon: any) => {
-    const arr = cardapio[tipo];
-    if (!Array.isArray(arr) || arr.length === 0) return null;
+ const renderRefeicoes = (tipo: keyof CardapioData, titulo: string, Icon: any) => {
+  const arr = cardapio[tipo];
+  if (!Array.isArray(arr) || arr.length === 0) return null;
 
-    return (
-      <div style={{ marginBottom: 20, padding: 12, border: "1px solid #ccc", borderRadius: 8 }}>
-        <h3 style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <Icon /> {titulo}
-        </h3>
-        {arr.map((r, idx) => (
-          <div key={idx} style={{ marginLeft: 10 }}>
-            {r.subtipo && <strong>{r.subtipo.charAt(0).toUpperCase() + r.subtipo.slice(1)}: </strong>}
-            <span>Comida: {r.comida ?? "—"} | Bebida: {r.bebida ?? "—"}</span>
-          </div>
-        ))}
-      </div>
-    );
-  };
+  let arrRender = arr;
+
+  if (tipo === "almoco") {
+    const subtipoOrder = [
+      "entrada",
+      "acompanhamentos",
+      "prato principal",
+      "guarnicao",
+      "suco",
+      "sobremesa",
+    ];
+
+    arrRender = arr.map((r, i) => ({
+      ...r,
+      subtipo: r.subtipo || subtipoOrder[i] || `item${i}`,
+    }));
+  }
+
+  return (
+    <div style={{ marginBottom: 20, padding: 12, border: "1px solid #ccc", borderRadius: 8 }}>
+      <h3 style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        <Icon /> {titulo}
+      </h3>
+      {arrRender.map((r, idx) => (
+        <div key={idx} style={{ marginLeft: 10 }}>
+          {r.subtipo && (
+            <strong>
+              {r.subtipo.charAt(0).toUpperCase() + r.subtipo.slice(1)}:{" "}
+            </strong>
+          )}
+          <span>
+            {tipo === "almoco"
+              ? r.comida ?? "—" // só mostra a comida do almoço
+              : `Comida: ${r.comida ?? "—"} | Bebida: ${r.bebida ?? "—"}`} 
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+
+
 
   return (
     <>
@@ -58,7 +87,7 @@ export default function Cardapio({ cardapio, loading }: Props) {
           {renderRefeicoes("cafe", "Café", BreakfastIcon)}
           {renderRefeicoes("almoco", "Almoço", RestaurantIcon)}
           {renderRefeicoes("lanche", "Lanche", SnackIcon)}
-          {renderRefeicoes("janta", "Janta", RestaurantIcon)}
+          {renderRefeicoes("jantar", "Janta", RestaurantIcon)}
         </div>
       )}
     </>

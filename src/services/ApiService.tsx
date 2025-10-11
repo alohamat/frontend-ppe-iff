@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const Api = axios.create({
-    baseURL: "http://localhost:8080",
+    baseURL: "https://ppe-api-one.vercel.app/",
     timeout: 10000
 })
 

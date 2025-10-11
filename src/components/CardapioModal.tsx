@@ -31,7 +31,7 @@ export default function CardapioModal({ isOpen, onClose, onSubmit }: Props) {
   const [pratoPrincipal, setPratoPrincipal] = useState("");
   const [guarnicao, setGuarnicao] = useState("");
   const [suco, setSuco] = useState("");
-  const [sobremesa, setSobremesa] = useState("");
+  const [fruta, setFruta] = useState("");
 
   // Lanche
   const [lancheComida, setLancheComida] = useState("");
@@ -62,7 +62,7 @@ export default function CardapioModal({ isOpen, onClose, onSubmit }: Props) {
       { subtipo: "prato principal", value: pratoPrincipal },
       { subtipo: "guarnicao", value: guarnicao },
       { subtipo: "suco", value: suco },
-      { subtipo: "sobremesa", value: sobremesa },
+      { subtipo: "fruta", value: fruta },
     ];
 
     almocoParts.forEach(part => {
@@ -101,7 +101,7 @@ export default function CardapioModal({ isOpen, onClose, onSubmit }: Props) {
 
     setDateInput("");
     setCafeComida(""); setCafeBebida("");
-    setEntrada(""); setAcompanhamentos(""); setPratoPrincipal(""); setGuarnicao(""); setSuco(""); setSobremesa("");
+    setEntrada(""); setAcompanhamentos(""); setPratoPrincipal(""); setGuarnicao(""); setSuco(""); setFruta("");
     setLancheComida(""); setLancheBebida("");
     setJantaComida(""); setJantaBebida("");
   };
@@ -126,9 +126,9 @@ export default function CardapioModal({ isOpen, onClose, onSubmit }: Props) {
         {/* Almoço */}
         <div className="mb-4">
           <h3 className="font-semibold">Almoço</h3>
-          {["Entrada","Acompanhamentos","Prato Principal","Guarnicao","Suco","Sobremesa"].map((label, i) => {
-            const setters = [setEntrada,setAcompanhamentos,setPratoPrincipal,setGuarnicao,setSuco,setSobremesa];
-            const values = [entrada,acompanhamentos,pratoPrincipal,guarnicao,suco,sobremesa];
+          {["Entrada","Acompanhamentos","Prato Principal","Guarnição","Suco","Fruta"].map((label, i) => {
+            const setters = [setEntrada,setAcompanhamentos,setPratoPrincipal,setGuarnicao,setSuco,setFruta];
+            const values = [entrada,acompanhamentos,pratoPrincipal,guarnicao,suco,fruta];
             return (
               <input
                 key={i}

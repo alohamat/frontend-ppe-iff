@@ -58,32 +58,36 @@ export default function RestaurantePage() {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="p-6">
-        <h1 className="text-2xl font-bold mb-4">Cardápios</h1>
+      <main className="flex flex-col">
+        <div className="flex items-center w-full mt-3 mb-6">
+          <h1 className="text-2xl font-bold">Cardápios</h1>
+          <div className="ml-auto flex gap-2">
+            <button
+              className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800"
+              onClick={() => setModalOpen(true)}
+            >
+              Criar Cardápio
+            </button>
+            <button
+              className="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-800"
+              onClick={verCardapio}
+            >
+              Ver Cardápios
+            </button>
+            <button className="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-800">
+              Excluir Cardápios
+            </button>
+          </div>
+        </div>
 
-        <button
-          className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800 mb-6"
-          onClick={() => setModalOpen(true)}
-        >
-          Criar Cardápio
-        </button>
-        <div className="p-6">
-          <button
-            className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800 mb-6"
-            onClick={verCardapio}
-          >
-            Ver Cardápios
-          </button>
-
-          {loading && <p>Carregando cardápios...</p>}
-
+        {loading && <p>Carregando cardápios...</p>}
+        <div id="cardapio-div" className="flex">
           {cardapios && cardapios.length > 0
             ? cardapios.map((c) => (
                 <Cardapio key={c.dia} cardapio={c} loading={false} />
               ))
             : !loading && <p>Nenhum cardápio disponível</p>}
         </div>
-
         <CardapioModal
           isOpen={modalOpen}
           onClose={() => setModalOpen(false)}
