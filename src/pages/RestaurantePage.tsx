@@ -1,16 +1,16 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-function AdminPage() {
+function RestaurantePage() {
   return (
     <div>
       <Header />
-      <main id="conteudo" className="flex flex-col min-w-screen">
-        <h1>Você é um admin!</h1>
+      <main>
+        <h1>Página de criar e editar cardápios</h1>
       </main>
       <Footer />
     </div>
   );
 }
 
-export default AdminPage;
+export default RestaurantePage;

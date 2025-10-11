@@ -4,10 +4,13 @@ import LoginPage from "./pages/LoginPage";
 import RegistroPage from "./pages/RegistroPage";
 import MainPage from "./pages/MainPage";
 import AdminPage from "./pages/AdminPage";
+import RestaurantePage from "./pages/RestaurantePage";
 
 import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
 import AdminRoute from "./routes/AdminRoute";
+import RestauranteRoute from "./routes/RestauranteRoute";
+
 import { AuthProvider } from "./context/AuthContext";
 
 function App() {
@@ -24,6 +27,9 @@ function App() {
         </Route>
         <Route element={<AdminRoute />}>
           <Route path="/admin" element={<AdminPage />} />
+        </Route>
+        <Route element={<RestauranteRoute />}>
+          <Route path="/restaurante" element={<RestaurantePage />} />
         </Route>
       </Routes>
     </AuthProvider>

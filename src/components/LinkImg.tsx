@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 
 type ImgProps = {
@@ -8,6 +9,7 @@ type ImgProps = {
   size?: "small" | "medium" | "big"; // restringe pros três valores
   blank?: boolean; // se abre link em nova pagina
   internal?: boolean; // se o link é interno
+  children?: ReactNode; // adicionar mais coisas
 };
 
 function Img({
@@ -17,6 +19,7 @@ function Img({
   blank,
   internal,
   funcao,
+  children,
   size = "medium",
 }: ImgProps) {
   const navigate = useNavigate();
@@ -28,15 +31,8 @@ function Img({
   };
 
   return (
-    <img
-      src={src}
-      alt={alt}
-      className={`
-        w-fit max-w-xs lg:max-w-full
-        ${sizeClasses[size]}
-        object-contain rounded-xl shadow-lg
-        hover:shadow-2xl transition duration-300 cursor-pointer
-      `}
+    <div
+      className="cursor-pointer flex gap-4 items-center"
       onClick={() => {
         if (!link && !funcao) return;
         if (funcao) funcao();
@@ -49,7 +45,19 @@ function Img({
           window.open(link);
         }
       }}
-    />
+    >
+      <img
+        src={src}
+        alt={alt}
+        className={`
+        w-fit max-w-xs lg:max-w-full
+        ${sizeClasses[size]}
+        object-contain rounded-xl shadow-lg
+        hover:shadow-2xl transition duration-300
+        `}
+      />
+      {children}
+    </div>
   );
 }
 

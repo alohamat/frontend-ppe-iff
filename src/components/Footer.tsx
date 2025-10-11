@@ -7,6 +7,7 @@ import QuickLinks from "./QuickLinks";
 import { ExitIcon } from "../assets/icons/Icons";
 import { UserIcon } from "../assets/icons/Icons";
 import { LockPersonIcon } from "../assets/icons/Icons";
+import { RestaurantIcon } from "../assets/icons/Icons";
 
 type FooterItemProps = {
   icon: JSX.Element;
@@ -40,6 +41,7 @@ function Footer() {
       {isAuthenticated && (
         <div className="flex items-center">
           <FooterItem icon={<LockPersonIcon />} label="Admin" show={isAdmin} onClick={() => navigate("/admin")} />
+          <FooterItem icon={<RestaurantIcon />} label="Restaurante" onClick={() => navigate("/restaurante")}/>
           <FooterItem icon={<ExitIcon />} label="Sair" onClick={logout} />
           <FooterItem
             icon={<UserIcon />}

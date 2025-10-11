@@ -19,11 +19,12 @@ function Header() {
           <Img src={IFFMobile} alt="IFF" size="medium" link="/main" internal={true}/>
         </span>
         <span className="hidden sm:flex items-center gap-4">
-          <Img src={IFF} alt="IFF" size="small" link="/main" internal={true}/>
-          <span className="text-white">
+          <Img src={IFF} alt="IFF" size="small" link="/main" internal={true}>
+          <section className="text-white">
             <h1 className="font-bold">Instituto Federal Fluminense</h1>
             <p>Campus Quissamã</p>
-          </span>
+          </section>
+          </Img>
         </span>
       </div>
 
