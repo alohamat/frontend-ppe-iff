@@ -1,8 +1,8 @@
 import { useAuth } from "../context/AuthContext";
 import Img from "./LinkImg";
 
-import IFFMobile from "../assets/images/IFF-MOBILE.jpg";
-import IFFPc2 from "../assets/images/IFF-PC2.jpg";
+import IFFMobile from "../assets/images/iffcol.png";
+import IFF from "../assets/images/iff.png"
 
 function Header() {
   const { user, isAuthenticated } = useAuth();
@@ -16,10 +16,14 @@ function Header() {
     >
       <div className="flex justify-start">
         <span className="block sm:hidden">
-          <Img src={IFFMobile} alt="IFF" size="small" link="/main" internal={true}/>
+          <Img src={IFFMobile} alt="IFF" size="medium" link="/main" internal={true}/>
         </span>
-        <span className="hidden sm:block">
-          <Img src={IFFPc2} alt="IFF" size="small" link="/main" internal={true}/>
+        <span className="hidden sm:flex items-center gap-4">
+          <Img src={IFF} alt="IFF" size="small" link="/main" internal={true}/>
+          <span className="text-white">
+            <h1 className="font-bold">Instituto Federal Fluminense</h1>
+            <p>Campus Quissamã</p>
+          </span>
         </span>
       </div>
 

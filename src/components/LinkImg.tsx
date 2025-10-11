@@ -23,7 +23,7 @@ function Img({
 
   const sizeClasses: Record<typeof size, string> = {
     small: "h-12",
-    medium: "h-32",
+    medium: "h-20",
     big: "h-42",
   };
 

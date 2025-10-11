@@ -23,7 +23,7 @@ function App() {
           <Route path="/main" element={<MainPage />} />
         </Route>
         <Route element={<AdminRoute />}>
-          <Route element={<AdminPage />} />
+          <Route path="/admin" element={<AdminPage />} />
         </Route>
       </Routes>
     </AuthProvider>

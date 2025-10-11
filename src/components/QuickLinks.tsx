@@ -30,7 +30,7 @@ export default function QuickLinks() {
           <rect x="3" y="14" width="7" height="7" rx="1.5" />
           <rect x="14" y="14" width="7" height="7" rx="1.5" />
         </svg>
-        <span className="text-sm font-medium">Atalhos</span>
+        <span className="text-sm font-medium hidden sm:block">Atalhos</span>
         {/* Chevron */}
         <svg
           className={`w-4 h-4 transform transition-transform ${

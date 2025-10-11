@@ -6,9 +6,10 @@ const AdminRoute = () => {
     const roles = user?.roles || [];
 
     const hasRequiredRoles =
-        roles.includes("ROLE_CANTINA") && roles.includes("ROLE_SER");
+        roles.includes("ROLE_CANTINA") || roles.includes("ROLE_SER");
 
     if (!isAuthenticated || !hasRequiredRoles) {
+        console.warn("Você não tem permissão para acessar essa página. ", user?.roles);
         return <Navigate to="/login" replace />;
     }
     return <Outlet />;
