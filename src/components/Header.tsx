@@ -1,54 +1,39 @@
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import Img from "./LinkImg";
 
-import IFFMobile from "../assets/images/IFF-MOBILE.jpg"
-import IFFPc2 from "../assets/images/IFF-PC2.jpg"
+import IFFMobile from "../assets/images/IFF-MOBILE.jpg";
+import IFFPc2 from "../assets/images/IFF-PC2.jpg";
 
 function Header() {
   const { user, isAuthenticated } = useAuth();
-  const navigate = useNavigate();
-  
-  return (
-    <header
-      className="bg-gradient-to-b from-green-700 to-green-800 
-                   flex flex-col sm:flex-row items-center justify-between 
-                   px-4 py-3 shadow-md gap-2"
-    >
-      {/* logo */}
-      <div
-        className="flex items-center gap-2 cursor-pointer"
-        onClick={() => navigate("/main")}
-      >
-        <img
-          src={IFFPc2}
-          alt="IFF"
-          className="hidden sm:block h-12 rounded-xl"
-        />
-        <img
-          src={IFFMobile}
-          alt="IFF"
-          className="block sm:hidden h-12 rounded-xl"
-        />
-      </div>
-        <h1 className="text-xl sm:text-2xl text-white font-bold">
-          Cardápio Digital
-        </h1>
 
-      {/* centro */}
-      <div className="flex items-center gap-4">
-        { isAuthenticated && (
-          <p className="text-white font-bold sm:text-xl ">Olá, {user?.nome}!</p>
-        )}
-        <div className="flex gap-3 mt-1">
-          {/* <button 
-        onClick={() => navigate("/about")}
-        className="text-green-100 hover:text-white underline text-sm">
-        Sobre Nós
-        </button> */}
-        </div>
+  return (
+    // flexcol no mobile e grid no pc
+    <header
+      className="bg-gradient-to-b from-green-700 to-green-800
+             sm:grid sm:grid-cols-3 items-center flex flex-col
+             px-4 py-3 shadow-md w-full"
+    >
+      <div className="flex justify-start">
+        <span className="block sm:hidden">
+          <Img src={IFFMobile} alt="IFF" size="small" link="/main" internal={true}/>
+        </span>
+        <span className="hidden sm:block">
+          <Img src={IFFPc2} alt="IFF" size="small" link="/main" internal={true}/>
+        </span>
       </div>
+
+      {/* meio */}
+      <h1 className="text-center text-xl sm:text-2xl text-white font-bold">
+        Cardápio Digital
+      </h1>
 
       {/* direita */}
+      <div className="flex justify-end items-center gap-4">
+        {isAuthenticated && (
+          <p className="text-white font-bold sm:text-xl">Olá, {user?.nome}!</p>
+        )}
+      </div>
     </header>
   );
 }

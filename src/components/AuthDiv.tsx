@@ -130,7 +130,7 @@ function AuthDiv({ mode }: AuthDivProps) {
       <form className="flex flex-col items-center gap-5" onSubmit={handleSubmit}>
         {/* Escolha do tipo (apenas para registro e login UX) */}
         <div className="flex gap-4 items-center">
-          <label className="flex items-center gap-2">
+          <label className="flex items-center gap-2 text-white">
             <input
               type="radio"
               name="userType"
@@ -139,7 +139,7 @@ function AuthDiv({ mode }: AuthDivProps) {
             />
             Aluno
           </label>
-          <label className="flex items-center gap-2">
+          <label className="flex items-center gap-2 text-white">
             <input
               type="radio"
               name="userType"
