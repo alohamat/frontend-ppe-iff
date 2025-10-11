@@ -49,12 +49,12 @@ export default function Cardapio({ cardapio, loading }: Props) {
   }
 
   return (
-    <div style={{ marginBottom: 20, padding: 12, border: "1px solid #ccc", borderRadius: 8 }}>
-      <h3 style={{ display: "flex", alignItems: "center", gap: 8 }}>
-        <Icon /> {titulo}
+    <div className="mb-5 p-3 border border-gray-300 rounded-lg">
+      <h3 className="flex items-center gap-2">
+      <Icon /> {titulo}
       </h3>
       {arrRender.map((r, idx) => (
-        <div key={idx} style={{ marginLeft: 10 }}>
+        <div key={idx} style={{ marginLeft: 10 }}> {/* por algum motivo o tailwind buga aqui, entao usei css tradicional*/}
           {r.subtipo && (
             <strong>
               {r.subtipo.charAt(0).toUpperCase() + r.subtipo.slice(1)}:{" "}
@@ -73,14 +73,14 @@ export default function Cardapio({ cardapio, loading }: Props) {
 
 
 
-
-  return (
-    <>
-      {loading ? (
-        <h1>Carregando...</h1>
-      ) : (
-        <div style={{ maxWidth: 600, margin: "0 auto" }}>
-          <h2 style={{ textAlign: "center", marginBottom: 20 }}>
+return (
+  <>
+    {loading ? (
+      <h1>Carregando...</h1>
+    ) : (
+      <div className="w-full">
+        <div className="border border-gray-400 rounded-lg p-6 shadow-md">
+          <h2 className="text-center mb-6">
             Cardápio do dia {formatarData(cardapio.dia)}
           </h2>
 
@@ -89,7 +89,8 @@ export default function Cardapio({ cardapio, loading }: Props) {
           {renderRefeicoes("lanche", "Lanche", SnackIcon)}
           {renderRefeicoes("jantar", "Janta", RestaurantIcon)}
         </div>
-      )}
-    </>
-  );
+      </div>
+    )}
+  </>
+)
 }

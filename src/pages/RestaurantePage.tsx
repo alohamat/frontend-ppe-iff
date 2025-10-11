@@ -81,10 +81,12 @@ export default function RestaurantePage() {
         </div>
 
         {loading && <p>Carregando cardápios...</p>}
-        <div id="cardapio-div" className="flex">
+        <div id="cardapio-div" className="flex flex-col lg:flex-row">
           {cardapios && cardapios.length > 0
             ? cardapios.map((c) => (
+              <div className="w-full lg:w-1/3">
                 <Cardapio key={c.dia} cardapio={c} loading={false} />
+              </div>
               ))
             : !loading && <p>Nenhum cardápio disponível</p>}
         </div>
