@@ -43,7 +43,7 @@ function MainPage() {
           {cardapios && cardapios.length > 0
             ? cardapios.map((c) => (
               <div className="flex-1">
-                <Cardapio key={c.dia} cardapio={c} loading={false} />
+                <Cardapio key={c.dia} cardapio={c} loading={false} onEdit={() => console.log("edit nao usado aqui")} onDelete={() => console.log("delete nao usado aqui")}/>
               </div>
               ))
             : !loading && <p>Nenhum cardápio disponível</p>}

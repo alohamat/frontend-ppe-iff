@@ -125,7 +125,6 @@ export default function CardapioModal({
       alert("Escolha a data do cardápio.");
       return null;
     }
-
     const refeicoes: Refeicao[] = [];
 
     // Café

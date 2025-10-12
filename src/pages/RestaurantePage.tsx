@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import CardapioModal from "../components/CardapioModal";
@@ -11,6 +11,11 @@ export default function RestaurantePage() {
   const [cardapioToEdit, setCardapioToEdit] = useState<CardapioData | null>(null);
   const [cardapios, setCardapios] = useState<CardapioData[] | null>(null);
   const [loading, setLoading] = useState(false);
+
+  // puxa os cardapios ao iniciar a pagina
+  useEffect(() => {
+    verCardapio();
+  }, [])
 
   // Criar cardápio
   const handleCreateCardapio = async (payload: any) => {
@@ -243,7 +248,7 @@ const convertToModalData = (cardapio: CardapioData) => {
           <h1 className="text-2xl font-bold">Cardápios</h1>
           <div className="ml-auto flex gap-2">
             <button
-              className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800"
+              className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800 cursor-pointer"
               onClick={() => {
                 setModalOpen(true);
                 setCardapioToEdit(null);
@@ -252,7 +257,7 @@ const convertToModalData = (cardapio: CardapioData) => {
               Criar Cardápio
             </button>
             <button
-              className="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-800"
+              className="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-800 cursor-pointer"
               onClick={verCardapio}
             >
               Ver Cardápios

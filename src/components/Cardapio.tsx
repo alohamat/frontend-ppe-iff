@@ -40,7 +40,12 @@ export default function Cardapio({ cardapio, loading, onDelete, onEdit }: Props)
   if (!cardapio) return <p>Nenhum cardápio disponível</p>;
   const [apagando, setApagando] = useState(false);
 
-  const formatarData = (data: string) => new Date(data).toLocaleDateString();
+// soma mais um a data por causa da diferenca 
+const formatarData = (data: string) => {
+  const dataAjustada = new Date(data);
+  dataAjustada.setDate(dataAjustada.getDate() + 1);
+  return dataAjustada.toLocaleDateString();
+};
 
   const handleDelete = async () => {
     if (!cardapio?._id) return;
