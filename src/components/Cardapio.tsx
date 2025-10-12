@@ -6,6 +6,7 @@ import {
 import { useState } from "react";
 import Api from "../services/ApiService";
 import { useAuth } from "../context/AuthContext";
+import { useLocation } from "react-router-dom";
 
 type Refeicao = {
   comida?: string;
@@ -31,6 +32,7 @@ type Props = {
 };
 
 export default function Cardapio({ cardapio, loading, onDelete, onEdit }: Props) {
+  const location = useLocation();
   const { token, user } = useAuth();
   const isCantina =
     user?.roles?.includes("ROLE_SER") || user?.roles?.includes("ROLE_CANTINA");
@@ -123,7 +125,7 @@ export default function Cardapio({ cardapio, loading, onDelete, onEdit }: Props)
       ) : (
         <div className="w-full">
           <div className="relative border border-gray-400 rounded-lg p-6 shadow-md">
-            {isCantina && (
+            {isCantina && location.pathname == "/restaurante" && (
               <div>
                 <button
                   onClick={handleDelete}

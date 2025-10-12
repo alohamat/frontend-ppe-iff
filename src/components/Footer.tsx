@@ -33,6 +33,7 @@ function Footer() {
   const { logout, isAuthenticated, user } = useAuth();
   const roles = user?.roles;
   const isAdmin = roles?.includes("ROLE_SER");
+  const isCantina = roles?.includes("ROLE_SER") || roles?.includes("ROLE_CANTINA");
   const navigate = useNavigate();
 
   return (
@@ -41,7 +42,7 @@ function Footer() {
       {isAuthenticated && (
         <div className="flex items-center">
           <FooterItem icon={<LockPersonIcon />} label="Admin" show={isAdmin} onClick={() => navigate("/admin")} />
-          <FooterItem icon={<RestaurantIcon />} label="Restaurante" onClick={() => navigate("/restaurante")}/>
+          <FooterItem icon={<RestaurantIcon />} label="Restaurante" show={isCantina} onClick={() => navigate("/restaurante")}/>
           <FooterItem icon={<ExitIcon />} label="Sair" onClick={logout} />
           <FooterItem
             icon={<UserIcon />}
