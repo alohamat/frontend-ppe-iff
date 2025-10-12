@@ -12,7 +12,7 @@ type Refeicao = {
   comida?: string;
   bebida?: string;
   subtipo?: string;
-  _id: string,
+  _id: string;
 };
 
 export type CardapioData = {
@@ -31,7 +31,12 @@ type Props = {
   onEdit: (id: string) => void; // Mudei de onUpdate para onEdit para ficar mais claro
 };
 
-export default function Cardapio({ cardapio, loading, onDelete, onEdit }: Props) {
+export default function Cardapio({
+  cardapio,
+  loading,
+  onDelete,
+  onEdit,
+}: Props) {
   const location = useLocation();
   const { token, user } = useAuth();
   const isCantina =
@@ -40,12 +45,12 @@ export default function Cardapio({ cardapio, loading, onDelete, onEdit }: Props)
   if (!cardapio) return <p>Nenhum cardápio disponível</p>;
   const [apagando, setApagando] = useState(false);
 
-// soma mais um a data por causa da diferenca 
-const formatarData = (data: string) => {
-  const dataAjustada = new Date(data);
-  dataAjustada.setDate(dataAjustada.getDate() + 1);
-  return dataAjustada.toLocaleDateString();
-};
+  // soma mais um a data por causa da diferenca
+  const formatarData = (data: string) => {
+    const dataAjustada = new Date(data);
+    dataAjustada.setDate(dataAjustada.getDate() + 1);
+    return dataAjustada.toLocaleDateString();
+  };
 
   const handleDelete = async () => {
     if (!cardapio?._id) return;
@@ -129,25 +134,25 @@ const formatarData = (data: string) => {
         <h1>Carregando...</h1>
       ) : (
         <div className="w-full">
-          <div className="relative border border-gray-400 rounded-lg p-6 shadow-md">
+          <div className="relative border border-gray-400 rounded-md p-3 shadow-sm text-sm max-w-md mx-auto">
             {isCantina && location.pathname == "/restaurante" && (
               <div>
                 <button
                   onClick={handleDelete}
                   disabled={apagando}
-                  className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white rounded-full px-3 py-1 text-sm font-bold shadow-md cursor-pointer"
+                  className="absolute top-1 right-2 bg-red-500 hover:bg-red-600 text-white rounded-full px-2 py-0.5 text-xs font-bold shadow cursor-pointer"
                 >
                   {apagando ? "..." : "X"}
                 </button>
-                <button 
-                  className="absolute top-2 right-12 bg-amber-500 hover:bg-amber-600 px-3 py-1 text-sm rounded-full font-bold shadow-md cursor-pointer"
+                <button
+                  className="absolute bottom-1 right-2 bg-amber-500 hover:bg-amber-600 px-2 py-0.5 text-xs rounded-full font-bold shadow cursor-pointer"
                   onClick={() => onEdit(cardapio._id)}
                 >
                   Editar
                 </button>
               </div>
             )}
-            <h2 className="text-center mb-6">
+            <h2 className="text-center mb-3 font-semibold">
               Cardápio do dia {formatarData(cardapio.dia)}
             </h2>
 

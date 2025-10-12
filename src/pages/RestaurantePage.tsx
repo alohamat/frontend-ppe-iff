@@ -245,10 +245,10 @@ const convertToModalData = (cardapio: CardapioData) => {
       <Header />
       <main className="flex flex-col p-4">
         <div className="flex items-center w-full mt-3 mb-6">
-          <h1 className="text-2xl font-bold">Cardápios</h1>
+          <h1 className="sm:text-2xl font-bold text-xl">Cardápios</h1>
           <div className="ml-auto flex gap-2">
             <button
-              className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800 cursor-pointer"
+              className="bg-green-700 text-white px-2 py-2 rounded hover:bg-green-800 cursor-pointer flex-shrink"
               onClick={() => {
                 setModalOpen(true);
                 setCardapioToEdit(null);
@@ -257,7 +257,7 @@ const convertToModalData = (cardapio: CardapioData) => {
               Criar Cardápio
             </button>
             <button
-              className="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-800 cursor-pointer"
+              className="bg-blue-700 text-white px-2 py-2 rounded hover:bg-blue-800 cursor-pointer flex-shrink"
               onClick={verCardapio}
             >
               Ver Cardápios
