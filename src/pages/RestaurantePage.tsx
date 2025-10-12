@@ -37,6 +37,7 @@ export default function RestaurantePage() {
     }
   };
 
+// Função melhorada para lidar com os subtipos do almoço
 const convertToBackendFormat = (payload: any, existingCardapio: CardapioData | null) => {
   if (!existingCardapio) {
     console.error("❌ Cardápio existente não encontrado");
@@ -48,7 +49,17 @@ const convertToBackendFormat = (payload: any, existingCardapio: CardapioData | n
     upd: []
   };
 
-  // Para cada refeição no payload, encontre o _id correspondente no cardápio existente
+  // Mapeamento de subtipos para normalizar
+  const subtipoMap: { [key: string]: string } = {
+    'entrada': 'entrada',
+    'acompanhamentos': 'acompanhamentos', 
+    'prato principal': 'prato principal',
+    'guarnicao': 'guarnicao',
+    'suco': 'suco',
+    'fruta': 'fruta'
+  };
+
+  // Para cada refeição no payload, encontre o _id correspondente
   payload.refeicoes.forEach((refeicao: any) => {
     let existingRefeicao = null;
 
@@ -58,7 +69,20 @@ const convertToBackendFormat = (payload: any, existingCardapio: CardapioData | n
         existingRefeicao = existingCardapio.cafe?.[0];
         break;
       case 'almoco':
-        existingRefeicao = existingCardapio.almoco?.find(a => a.subtipo === refeicao.subtipo);
+        // Para almoço, normaliza o subtipo e busca
+        const subtipoNormalizado = subtipoMap[refeicao.subtipo?.toLowerCase()] || refeicao.subtipo;
+        existingRefeicao = existingCardapio.almoco?.find(a => 
+          a.subtipo?.toLowerCase() === subtipoNormalizado?.toLowerCase()
+        );
+        
+        // Se não encontrou, tenta buscar por ordem (fallback)
+        if (!existingRefeicao && existingCardapio.almoco) {
+          const subtipoOrder = ['entrada', 'acompanhamentos', 'prato principal', 'guarnicao', 'suco', 'fruta'];
+          const index = subtipoOrder.indexOf(subtipoNormalizado);
+          if (index !== -1) {
+            existingRefeicao = existingCardapio.almoco[index];
+          }
+        }
         break;
       case 'lanche':
         existingRefeicao = existingCardapio.lanche?.[0];
@@ -69,13 +93,21 @@ const convertToBackendFormat = (payload: any, existingCardapio: CardapioData | n
     }
 
     if (existingRefeicao && existingRefeicao._id) {
-      backendPayload.upd.push({
+      const updateItem: any = {
         _id: existingRefeicao._id,
         tipo_refeicao: refeicao.tipo_refeicao,
         comida: refeicao.comida,
-        bebida: refeicao.bebida,
-        subtipo: refeicao.subtipo || undefined
-      });
+        bebida: refeicao.bebida
+      };
+
+      // Para almoço, inclui o subtipo
+      if (refeicao.tipo_refeicao === 'almoco' && refeicao.subtipo) {
+        updateItem.subtipo = refeicao.subtipo;
+      }
+
+      backendPayload.upd.push(updateItem);
+      
+      console.log(`✅ Refeição ${refeicao.tipo_refeicao}${refeicao.subtipo ? ` (${refeicao.subtipo})` : ''} com _id:`, existingRefeicao._id);
     } else {
       console.warn("⚠️ Refeição não encontrada:", refeicao);
     }

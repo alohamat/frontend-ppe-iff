@@ -84,7 +84,7 @@ export default function Cardapio({ cardapio, loading, onDelete, onEdit }: Props)
         "prato principal",
         "guarnicao",
         "suco",
-        "sobremesa",
+        "fruta",
       ];
 
       arrRender = arr.map((r, i) => ({
