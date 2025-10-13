@@ -6,12 +6,18 @@ import Api from "../services/ApiService";
 type User = {
   _id: string;
   nome: string;
-  sobrenome: string;
   email: string;
   matricula?: string;
   roles: string[];
   ativo: boolean;
   createdAt?: string;
+};
+
+const getEndpointByUserType = (user: User) => {
+  if (user.roles.includes("ROLE_ALUNO")) {
+    return "alunos";
+  }
+  return "servidores"; // Qualquer outro caso vai pra servidores
 };
 
 const getUserIdentifier = (user: User) => {
@@ -21,7 +27,6 @@ const getUserIdentifier = (user: User) => {
   return user.email;
 };
 
-// 🔥 Função para determinar o tipo de identificador (para styling)
 const getIdentifierType = (user: User) => {
   if (user.roles.includes("ROLE_ALUNO") && user.matricula) {
     return "matrícula";
@@ -56,7 +61,6 @@ export default function AdminPage() {
         },
       });
       setUsers(res.data.users || res.data);
-      console.log("Recebi: ", res.data)
     } catch (err: any) {
       console.error("Erro ao carregar usuários:", err);
       setError("Erro ao carregar lista de usuários");
@@ -65,34 +69,42 @@ export default function AdminPage() {
     }
   };
 
-  const updateUserRoles = async (userId: string, newRoles: string[]) => {
+  const updateUserRoles = async (userId: string, newRoles: string[], user: User) => {
     try {
       const token = localStorage.getItem("token");
-      await Api.put(`users/${userId}/roles`, { roles: newRoles }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const endpoint = getEndpointByUserType(user);
+      
+      console.log(`🎯 Atualizando ${endpoint}/${userId} com roles:`, newRoles);
+
+      await Api.put(
+        `${endpoint}/${userId}`,
+        { roles: newRoles },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
       // Atualiza a lista local
       setUsers(prev => prev.map(user => 
         user._id === userId ? { ...user, roles: newRoles } : user
       ));
       alert("Permissões atualizadas com sucesso!");
+      
     } catch (err: any) {
       console.error("Erro ao atualizar roles:", err);
-      alert("Erro ao atualizar permissões do usuário");
+      alert("Erro ao atualizar permissões do usuário: " + (err.response?.data?.message || err.message));
     }
   };
 
-  const toggleRole = (userId: string, role: string) => {
-    const user = users.find(u => u._id === userId);
-    if (!user) return;
-
+  const toggleRole = (userId: string, role: string, user: User) => {
     const newRoles = user.roles.includes(role)
-      ? user.roles.filter(r => r !== role) // Remove role
-      : [...user.roles, role]; // Adiciona role
+      ? user.roles.filter(r => r !== role)
+      : [...user.roles, role];
 
-    updateUserRoles(userId, newRoles);
+    updateUserRoles(userId, newRoles, user);
   };
 
   return (
@@ -129,6 +141,9 @@ export default function AdminPage() {
                     Identificação
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Tipo
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Permissões
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -160,8 +175,8 @@ export default function AdminPage() {
   );
 }
 
-// omponente para cada linha de usuário
-function UserRow({ user, onToggleRole }: { user: User; onToggleRole: (userId: string, role: string) => void }) {
+// Componente para cada linha de usuário
+function UserRow({ user, onToggleRole }: { user: User; onToggleRole: (userId: string, role: string, user: User) => void }) {
   const rolesOptions = [
     "ROLE_USER",
     "ROLE_ALUNO",
@@ -171,18 +186,28 @@ function UserRow({ user, onToggleRole }: { user: User; onToggleRole: (userId: st
 
   const identifier = getUserIdentifier(user);
   const identifierType = getIdentifierType(user);
+  const userType = getEndpointByUserType(user);
 
   return (
     <tr>
       <td className="px-6 py-4 whitespace-nowrap">
-        <div className="text-sm font-medium text-gray-900">{user.nome} {user.sobrenome}</div>
+        <div className="text-sm font-medium text-gray-900">{user.nome}</div>
         <div className="text-sm text-gray-500">
           {formatDate(user.createdAt)}
         </div>
       </td>
-       <td className="px-6 py-4 whitespace-nowrap">
+      <td className="px-6 py-4 whitespace-nowrap">
         <div className="text-sm text-gray-900">{identifier}</div>
-        <div className="text-xs text-gray-500 capitalize">{identifierType}</div> {/*mostra o tipo */}
+        <div className="text-xs text-gray-500 capitalize">{identifierType}</div>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+          userType === "alunos" 
+            ? "bg-green-100 text-green-800"
+            : "bg-purple-100 text-purple-800"
+        }`}>
+          {userType}
+        </span>
       </td>
       <td className="px-6 py-4">
         <div className="flex flex-wrap gap-2">
@@ -191,15 +216,15 @@ function UserRow({ user, onToggleRole }: { user: User; onToggleRole: (userId: st
               key={`${user._id}-${role}`}
               className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                 role === "ROLE_ALUNO" 
-                  ? "bg-green-100 text-green-800" 
-                  : "bg-blue-100 text-blue-800"
+                  ? "bg-green-100 text-green-800"
+                  : "bg-purple-100 text-purple-800"
               }`}
             >
               {role.replace('ROLE_', '')}
             </span>
           ))}
         </div>
-      </td> 
+      </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
         <div className="space-y-2">
           {rolesOptions.map(role => (
@@ -207,7 +232,7 @@ function UserRow({ user, onToggleRole }: { user: User; onToggleRole: (userId: st
               <input
                 type="checkbox"
                 checked={user.roles.includes(role)}
-                onChange={() => onToggleRole(user._id, role)}
+                onChange={() => onToggleRole(user._id, role, user)}
                 className="rounded border-gray-300"
               />
               <span className="text-sm">{role.replace('ROLE_', '')}</span>
