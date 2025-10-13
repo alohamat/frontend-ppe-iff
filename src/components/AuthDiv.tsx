@@ -21,7 +21,6 @@ function AuthDiv({ mode }: AuthDivProps) {
   const [confirmar, setConfirmar] = useState("");
   const [nome, setNome] = useState("");
   const [sobrenome, setSobrenome] = useState("");
-  // podeAlmocar como string "sim" | "nao" | "" para fácil envio
   const [podeAlmocar, setPodeAlmocar] = useState<"sim" | "nao" | "">("");
 
   const [loading, setLoading] = useState(false);
@@ -52,12 +51,9 @@ function AuthDiv({ mode }: AuthDivProps) {
 
     // Campos por tipo
     if (mode === "registro") {
-      if (userType === "aluno" && !matricula) {
+      // Apenas alunos podem se registrar
+      if (!matricula) {
         setErro("Matrícula é obrigatória para alunos.");
-        return;
-      }
-      if (userType === "servidor" && !email) {
-        setErro("E-mail é obrigatório para servidores.");
         return;
       }
       if (!nome || !sobrenome) {
@@ -80,33 +76,16 @@ function AuthDiv({ mode }: AuthDivProps) {
 
     try {
       if (mode === "registro") {
-        // montar payload dependendo do tipo
-        if (userType === "aluno") {
-          // registra aluno: matricula, nome, sobrenome, podeAlmocar, senha
-          const payload = {
-            matricula: matricula.trim(),
-            nome: nome.trim(),
-            sobrenome: sobrenome.trim(),
-            podeAlmocar: podeAlmocar,
-            senha,
-          };
-          const data = await register(payload);
-          console.log("Registro aluno:", data);
-          alert("Registro de aluno feito. Verifique se token foi retornado.");
-        } else {
-          // registra servidor: email, nome, sobrenome, senha
-          const payload = {
-            email: email.trim(),
-            nome: nome.trim(),
-            sobrenome: sobrenome.trim(),
-            senha,
-          };
-          const data = await register(payload);
-          console.log("Registro servidor:", data);
-          alert("Registro de servidor feito. Verifique se token foi retornado.");
-        }
+        const payload = {
+          matricula: matricula.trim(),
+          nome: nome.trim(),
+          sobrenome: sobrenome.trim(),
+          podeAlmocar: podeAlmocar,
+          senha,
+        };
+        const data = await register(payload);
+        console.log("Registro aluno:", data);
       } else {
-        // login
         if (userType === "aluno") {
           const data = await login({ matricula: matricula.trim(), senha });
           console.log("Login aluno:", data);
@@ -128,29 +107,29 @@ function AuthDiv({ mode }: AuthDivProps) {
   return (
     <div>
       <form className="flex flex-col items-center gap-5" onSubmit={handleSubmit}>
-        {/* Escolha do tipo (apenas para registro e login UX) */}
-        <div className="flex gap-4 items-center">
-          <label className="flex items-center gap-2 text-white">
-            <input
-              type="radio"
-              name="userType"
-              checked={userType === "aluno"}
-              onChange={() => setUserType("aluno")}
-            />
-            Aluno
-          </label>
-          <label className="flex items-center gap-2 text-white">
-            <input
-              type="radio"
-              name="userType"
-              checked={userType === "servidor"}
-              onChange={() => setUserType("servidor")}
-            />
-            Servidor
-          </label>
-        </div>
+        {mode === "login" && (
+          <div className="flex gap-4 items-center">
+            <label className="flex items-center gap-2 text-white">
+              <input
+                type="radio"
+                name="userType"
+                checked={userType === "aluno"}
+                onChange={() => setUserType("aluno")}
+              />
+              Aluno
+            </label>
+            <label className="flex items-center gap-2 text-white">
+              <input
+                type="radio"
+                name="userType"
+                checked={userType === "servidor"}
+                onChange={() => setUserType("servidor")}
+              />
+              Servidor
+            </label>
+          </div>
+        )}
 
-        {/* Campos variam conforme modo / tipo */}
         {mode === "login" ? (
           userType === "aluno" ? (
             <InputForm placeholder="Matrícula" onChange={(e) => setMatricula(e.target.value)} />
@@ -158,40 +137,34 @@ function AuthDiv({ mode }: AuthDivProps) {
             <InputForm placeholder="E-mail" type="email" onChange={(e) => setEmail(e.target.value)} />
           )
         ) : (
-          // registro: exibir ambos sets adaptativos
-          <>
-            {userType === "aluno" ? (
-              <InputForm placeholder="Matrícula" onChange={(e) => setMatricula(e.target.value)} />
-            ) : (
-              <InputForm placeholder="E-mail" type="email" onChange={(e) => setEmail(e.target.value)} />
-            )}
-
+          <div className="flex flex-col gap-4">
+            <InputForm placeholder="Matrícula" onChange={(e) => setMatricula(e.target.value)} />
             <InputForm placeholder="Nome" onChange={(e) => setNome(e.target.value)} />
             <InputForm placeholder="Sobrenome" onChange={(e) => setSobrenome(e.target.value)} />
 
             {/* Apenas aluno tem podeAlmocar */}
-            {userType === "aluno" && (
-              <div className="flex gap-4 items-center">
-                <p className="bg-white p-2 rounded-2xl border-2 border-solid">Você pode almoçar?</p>
-                <select
-                  className="bg-white p-2 rounded-2xl focus:scale-110 transition-all duration-150 ease-in-out border-2 border-solid"
-                  value={podeAlmocar || "n/a"}
-                  onChange={(e) =>
-                    setPodeAlmocar(e.target.value === "sim" ? "sim" : e.target.value === "nao" ? "nao" : "")
-                  }
-                >
-                  <option value="n/a"> --- </option>
-                  <option value="sim">Sim</option>
-                  <option value="nao">Não</option>
-                </select>
-              </div>
-            )}
-          </>
+            <div className="flex gap-4 justify-center">
+              <p className="bg-white p-2 rounded-2xl border-2 border-solid flex-[6]">Você pode almoçar?</p>
+              <select
+                className="bg-white p-2 rounded-2xl focus:scale-110 transition-all duration-150 ease-in-out border-2 border-solid flex-[2]"
+                value={podeAlmocar || "n/a"}
+                onChange={(e) =>
+                  setPodeAlmocar(e.target.value === "sim" ? "sim" : e.target.value === "nao" ? "nao" : "")
+                }
+              >
+                <option value="n/a"> --- </option>
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+              </select>
+            </div>
+          </div>
         )}
 
         {/* Senha / confirmar */}
         <InputForm placeholder="Senha" type="password" onChange={(e) => setSenha(e.target.value)} />
-        {mode === "registro" && <InputForm placeholder="Confirmar senha" type="password" onChange={(e) => setConfirmar(e.target.value)} />}
+        {mode === "registro" && (
+          <InputForm placeholder="Confirmar senha" type="password" onChange={(e) => setConfirmar(e.target.value)} />
+        )}
 
         {/* Erro visível */}
         {erro && <p className="text-red-600">{erro}</p>}

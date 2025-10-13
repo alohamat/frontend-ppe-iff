@@ -76,8 +76,9 @@ export default function AdminPage() {
       
       console.log(`🎯 Atualizando ${endpoint}/${userId} com roles:`, newRoles);
 
+      if (endpoint === "alunos") {
       await Api.put(
-        `${endpoint}/${userId}`,
+        `alunos/${userId}`,
         { roles: newRoles },
         {
           headers: {
@@ -86,6 +87,24 @@ export default function AdminPage() {
           },
         }
       );
+      console.log("✅ Aluno atualizado com sucesso");
+      
+    } else {
+      await Api.put(
+        `servidores`,
+        { 
+          email: user.email,
+          roles: newRoles
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("✅ Servidor atualizado com sucesso");
+    }
 
       // Atualiza a lista local
       setUsers(prev => prev.map(user => 
