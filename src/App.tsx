@@ -13,9 +13,23 @@ import RestauranteRoute from "./routes/RestauranteRoute";
 
 import { AuthProvider } from "./context/AuthContext";
 
+import { ToastContainer } from "react-toastify";
+
 function App() {
   return (
     <AuthProvider>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <Routes>
         <Route path="*" element={<Navigate to="/main" replace />}/>
         <Route element={<PublicRoute />}>

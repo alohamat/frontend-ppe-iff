@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { toast } from "react-toastify";
+
 // Tipos
 export type Refeicao = {
   tipo_refeicao: "cafe" | "almoco" | "lanche" | "jantar";
@@ -122,8 +124,8 @@ export default function CardapioModal({
 
   const buildPayload = (): Payload | null => {
     if (!dateInput) {
-      alert("Escolha a data do cardápio.");
-      return null;
+    toast.error("Escolha a data do cardápio.", { position: "top-right" });
+    return null;
     }
     const refeicoes: Refeicao[] = [];
 
@@ -176,7 +178,7 @@ export default function CardapioModal({
     }
 
     if (refeicoes.length === 0) {
-      alert("Adicione pelo menos uma refeição.");
+      toast.error("Adicione pelo menos uma refeição.", {position: "top-right"});
       return null;
     }
 

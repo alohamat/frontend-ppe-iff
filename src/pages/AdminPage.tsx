@@ -2,6 +2,7 @@ import { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Api from "../services/ApiService";
+import { toast } from "react-toastify";
 
 type User = {
   _id: string;
@@ -110,11 +111,11 @@ export default function AdminPage() {
       setUsers(prev => prev.map(user => 
         user._id === userId ? { ...user, roles: newRoles } : user
       ));
-      alert("Permissões atualizadas com sucesso!");
+      toast.success("Permissões atualizadas com sucesso!", {position: "top-right"});
       
     } catch (err: any) {
       console.error("Erro ao atualizar roles:", err);
-      alert("Erro ao atualizar permissões do usuário: " + (err.response?.data?.message || err.message));
+      toast.error("Erro ao atualizar permissões do usuário: " + (err.response?.data?.message || err.message), {position:"top-right"});
     }
   };
 

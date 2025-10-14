@@ -7,6 +7,9 @@ import { useState } from "react";
 import Api from "../services/ApiService";
 import { useAuth } from "../context/AuthContext";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
+
+
 
 type Refeicao = {
   comida?: string;
@@ -52,32 +55,52 @@ export default function Cardapio({
     return dataAjustada.toLocaleDateString();
   };
 
-  const handleDelete = async () => {
-    if (!cardapio?._id) return;
+ const handleDelete = () => {
+  if (!cardapio?._id) return;
 
-    const confirmacao = confirm("Tem certeza que deseja apagar este cardápio?");
-    if (!confirmacao) return;
+  toast.info(
+    ({ closeToast }) => (
+      <div className="flex flex-col gap-3 p-3 bg-gray-50 rounded-lg border border-green-700 shadow-md">
+        <span className="text-green-800 font-semibold text-center">
+          Tem certeza que deseja apagar este cardápio?
+        </span>
+        <div className="flex justify-center gap-4 mt-2">
+          <button
+            className="bg-green-700 hover:bg-green-800 text-white px-4 py-1 rounded font-bold transition-colors"
+            onClick={async () => {
+              closeToast();
+              try {
+                setApagando(true);
+                await Api.delete(`cardapios/${cardapio._id}`, {
+                  headers: { Authorization: `Bearer ${token}` },
+                });
+                toast.success("Cardápio apagado com sucesso!", {
+                  theme: "colored",
+                });
+                onDelete?.(cardapio._id);
+              } catch (err) {
+                console.error(err);
+                toast.error("Falha ao apagar o cardápio.", { theme: "colored" });
+              } finally {
+                setApagando(false);
+              }
+            }}
+          >
+            Sim
+          </button>
+          <button
+            className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-1 rounded font-semibold transition-colors"
+            onClick={closeToast}
+          >
+            Não
+          </button>
+        </div>
+      </div>
+    ),
+    { autoClose: false, closeOnClick: false }
+  );''
+};
 
-    try {
-      setApagando(true);
-      const resp = await Api.delete(`cardapios/${cardapio._id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!resp) throw new Error("Erro ao apagar o cardápio");
-
-      alert("Cardápio apagado com sucesso!");
-      onDelete?.(cardapio._id);
-    } catch (err) {
-      console.error(err);
-      alert("Falha ao apagar o cardápio.");
-    } finally {
-      setApagando(false);
-    }
-  };
 
   const renderRefeicoes = (
     tipo: keyof CardapioData,

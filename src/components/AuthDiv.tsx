@@ -21,13 +21,13 @@ function AuthDiv({ mode }: AuthDivProps) {
   const [confirmar, setConfirmar] = useState("");
   const [nome, setNome] = useState("");
   const [sobrenome, setSobrenome] = useState("");
-  const [podeAlmocar, setPodeAlmocar] = useState<"sim" | "nao" | "">("");
+  const [podeAlmocar, _setPodeAlmocar] = useState<"sim" | "nao" | "">("nao");
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);    
   const [erro, setErro] = useState<string | null>(null);
 
   function senhaIncorreta() {
-    alert("Senha e confirmação não conferem.");
+    setErro("Senha e confirmação não conferem.");
   }
 
   function limparErros() {
@@ -97,8 +97,7 @@ function AuthDiv({ mode }: AuthDivProps) {
     } catch (err: any) {
       console.error(err);
       const msg = err?.response?.data?.message || err.message || "Erro desconhecido";
-      setErro(msg);
-      alert(msg);
+      setErro(msg);;
     } finally {
       setLoading(false);
     }
@@ -141,22 +140,6 @@ function AuthDiv({ mode }: AuthDivProps) {
             <InputForm placeholder="Matrícula" onChange={(e) => setMatricula(e.target.value)} />
             <InputForm placeholder="Nome" onChange={(e) => setNome(e.target.value)} />
             <InputForm placeholder="Sobrenome" onChange={(e) => setSobrenome(e.target.value)} />
-
-            {/* Apenas aluno tem podeAlmocar */}
-            <div className="flex gap-4 justify-center">
-              <p className="bg-white p-2 rounded-2xl border-2 border-solid flex-[6]">Você pode almoçar?</p>
-              <select
-                className="bg-white p-2 rounded-2xl focus:scale-110 transition-all duration-150 ease-in-out border-2 border-solid flex-[2]"
-                value={podeAlmocar || "n/a"}
-                onChange={(e) =>
-                  setPodeAlmocar(e.target.value === "sim" ? "sim" : e.target.value === "nao" ? "nao" : "")
-                }
-              >
-                <option value="n/a"> --- </option>
-                <option value="sim">Sim</option>
-                <option value="nao">Não</option>
-              </select>
-            </div>
           </div>
         )}
 

@@ -6,6 +6,8 @@ import Api from "../services/ApiService";
 import type { CardapioData } from "../components/Cardapio";
 import Cardapio from "../components/Cardapio";
 
+import { toast } from "react-toastify";
+
 export default function RestaurantePage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [cardapioToEdit, setCardapioToEdit] = useState<CardapioData | null>(null);
@@ -28,7 +30,7 @@ export default function RestaurantePage() {
         },
       });
       console.log("✅ Cardápio criado:", res.data);
-      alert("Cardápio criado com sucesso!");
+      toast.success("Cardápio criado com sucesso!", {position:"top-right"});
       verCardapio();
       setModalOpen(false);
     } catch (err: any) {
@@ -38,7 +40,7 @@ export default function RestaurantePage() {
         err.response?.data || err.message
       );
       const msg = err.response?.data?.message || "Erro desconhecido";
-      alert("Erro ao criar cardápio: " + msg);
+      toast.error("Erro ao criar cardápio: " + msg, {position:"top-right"});
     }
   };
 
@@ -130,7 +132,7 @@ const handleEditCardapio = async (payload: any, id?: string) => {
     const existingCardapio = cardapios?.find(c => c._id === id) || null;
     
     if (!existingCardapio) {
-      alert("Cardápio não encontrado para edição");
+      toast.error("Cardápio não encontrado para edição", {position: "top-right"});
       return;
     }
 
@@ -146,7 +148,7 @@ const handleEditCardapio = async (payload: any, id?: string) => {
     });
     
     console.log("✅ Resposta do backend:", res.data);
-    alert("Cardápio editado com sucesso!");
+    toast.success("Cardápio editado com sucesso!", {position: "top-right"});
     verCardapio();
     setModalOpen(false);
     setCardapioToEdit(null);
@@ -157,7 +159,7 @@ const handleEditCardapio = async (payload: any, id?: string) => {
       err.response?.data || err.message
     );
     const msg = err.response?.data?.message || "Erro desconhecido";
-    alert("Erro ao editar cardápio: " + msg);
+    toast.error("Erro ao editar cardápio: " + msg, {position: "top-right"});
   }
 };
   const verCardapio = async () => {
