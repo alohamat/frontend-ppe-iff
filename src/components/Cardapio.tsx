@@ -52,7 +52,11 @@ export default function Cardapio({
   const formatarData = (data: string) => {
     const dataAjustada = new Date(data);
     dataAjustada.setDate(dataAjustada.getDate() + 1);
-    return dataAjustada.toLocaleDateString();
+    const dias: Intl.DateTimeFormatOptions = {
+      weekday: "long", day: "2-digit", month: "2-digit", year: "numeric",
+    };
+    const DataFormatada = dataAjustada.toLocaleDateString("pt-BR", dias);
+    return DataFormatada.charAt(0).toUpperCase() + DataFormatada.slice(1);
   };
 
  const handleDelete = () => {
