@@ -144,11 +144,14 @@ export default function Cardapio({
                 {r.subtipo.charAt(0).toUpperCase() + r.subtipo.slice(1)}:{" "}
               </strong>
             )}
-            <span>
-              {tipo === "almoco"
-                ? r.comida ?? "—"
-                : `Comida: ${r.comida ?? "—"} | Bebida: ${r.bebida ?? "—"}`}
-            </span>
+            {tipo === "almoco" ? (
+              <span>{r.comida ?? "—"}</span>
+              ) : (
+              <div className="flex flex-col ml-4">
+                <span> <strong> Comida: </strong> {r.comida ?? "—"}</span>
+                <span> <strong> Bebida: </strong> {r.bebida ?? "—"}</span>
+              </div>
+              )}
           </div>
         ))}
       </div>
@@ -183,7 +186,7 @@ export default function Cardapio({
               Cardápio do dia {formatarData(cardapio.dia)}
             </h2>
 
-            {renderRefeicoes("cafe", "Café", BreakfastIcon)}
+            {renderRefeicoes("cafe", "Café da Manhã", BreakfastIcon)}
             {renderRefeicoes("almoco", "Almoço", RestaurantIcon)}
             {renderRefeicoes("lanche", "Lanche", SnackIcon)}
             {renderRefeicoes("jantar", "Janta", RestaurantIcon)}
