@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import InputForm from "./InputForm";
 import { useAuth } from "../context/AuthContext";
 
@@ -23,7 +23,7 @@ function AuthDiv({ mode }: AuthDivProps) {
   const [sobrenome, setSobrenome] = useState("");
   const [podeAlmocar, _setPodeAlmocar] = useState<"sim" | "nao" | "">("nao");
 
-  const [loading, setLoading] = useState(false);    
+  const [loading, setLoading] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
 
   function senhaIncorreta() {
@@ -96,8 +96,9 @@ function AuthDiv({ mode }: AuthDivProps) {
       }
     } catch (err: any) {
       console.error(err);
-      const msg = err?.response?.data?.message || err.message || "Erro desconhecido";
-      setErro(msg);;
+      const msg =
+        err?.response?.data?.message || err.message || "Erro desconhecido";
+      setErro(msg);
     } finally {
       setLoading(false);
     }
@@ -105,7 +106,10 @@ function AuthDiv({ mode }: AuthDivProps) {
 
   return (
     <div>
-      <form className="flex flex-col items-center gap-5" onSubmit={handleSubmit}>
+      <form
+        className="flex flex-col items-center gap-5"
+        onSubmit={handleSubmit}
+      >
         {mode === "login" && (
           <div className="flex gap-4 items-center">
             <label className="flex items-center gap-2 text-white">
@@ -131,22 +135,52 @@ function AuthDiv({ mode }: AuthDivProps) {
 
         {mode === "login" ? (
           userType === "aluno" ? (
-            <InputForm placeholder="Matrícula" onChange={(e) => setMatricula(e.target.value)} />
+            <InputForm
+              key="aluno-input"
+              placeholder="Matrícula"
+              onChange={(e) => setMatricula(e.target.value)}
+              id="matriculainput"
+              value={matricula}
+            />
           ) : (
-            <InputForm placeholder="E-mail" type="email" onChange={(e) => setEmail(e.target.value)} />
+            <InputForm
+              key="servidor-input"
+              placeholder="E-mail"
+              type="email"
+              onChange={(e) => setEmail(e.target.value)}
+              id="emailinput"
+              value={email}
+            />
           )
         ) : (
           <div className="flex flex-col gap-4">
-            <InputForm placeholder="Matrícula" onChange={(e) => setMatricula(e.target.value)} />
-            <InputForm placeholder="Nome" onChange={(e) => setNome(e.target.value)} />
-            <InputForm placeholder="Sobrenome" onChange={(e) => setSobrenome(e.target.value)} />
+            <InputForm
+              placeholder="Matrícula"
+              onChange={(e) => setMatricula(e.target.value)}
+            />
+            <InputForm
+              placeholder="Nome"
+              onChange={(e) => setNome(e.target.value)}
+            />
+            <InputForm
+              placeholder="Sobrenome"
+              onChange={(e) => setSobrenome(e.target.value)}
+            />
           </div>
         )}
 
         {/* Senha / confirmar */}
-        <InputForm placeholder="Senha" type="password" onChange={(e) => setSenha(e.target.value)} />
+        <InputForm
+          placeholder="Senha"
+          type="password"
+          onChange={(e) => setSenha(e.target.value)}
+        />
         {mode === "registro" && (
-          <InputForm placeholder="Confirmar senha" type="password" onChange={(e) => setConfirmar(e.target.value)} />
+          <InputForm
+            placeholder="Confirmar senha"
+            type="password"
+            onChange={(e) => setConfirmar(e.target.value)}
+          />
         )}
 
         {/* Erro visível */}
@@ -157,7 +191,11 @@ function AuthDiv({ mode }: AuthDivProps) {
           disabled={loading}
           className="w-[25vw] bg-green-500 p-2 rounded-2xl transition-all duration-300 ease-in-out hover:scale-110 hover:cursor-pointer sm:w-[15vw] hover:shadow-[0px_15px_50px_0px] border-2 border-solid disabled:opacity-50"
         >
-          {loading ? "Processando..." : mode === "registro" ? "Registrar" : "Login"}
+          {loading
+            ? "Processando..."
+            : mode === "registro"
+            ? "Registrar"
+            : "Login"}
         </button>
       </form>
     </div>
