@@ -26,6 +26,11 @@ function AuthDiv({ mode }: AuthDivProps) {
   const [loading, setLoading] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
 
+  function validarEmail(email: string): boolean {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  }
+
   function senhaIncorreta() {
     setErro("Senha e confirmação não conferem.");
   }
@@ -90,6 +95,10 @@ function AuthDiv({ mode }: AuthDivProps) {
           const data = await login({ matricula: matricula.trim(), senha });
           console.log("Login aluno:", data);
         } else {
+          if (!validarEmail(email)) {
+            setErro("Email inválido. Use o formato: seuemail@dominio.com");
+            return;
+          }
           const data = await login({ email: email.trim(), senha });
           console.log("Login servidor:", data);
         }

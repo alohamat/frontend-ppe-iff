@@ -138,7 +138,7 @@ export default function Cardapio({
           <Icon /> {titulo}
         </h3>
         {arrRender.map((r, idx) => (
-          <div key={idx} style={{ marginLeft: 10 }}>
+          <div key={idx} className="text-xl">
             {r.subtipo && (
               <strong>
                 {r.subtipo.charAt(0).toUpperCase() + r.subtipo.slice(1)}:{" "}
@@ -164,7 +164,7 @@ export default function Cardapio({
         <h1>Carregando...</h1>
       ) : (
         <div className="w-full">
-          <div className="relative border border-gray-400 rounded-md p-3 shadow-sm text-sm max-w-md mx-auto">
+          <div className="relative border-4 border-green-500 rounded-md p-3 shadow-sm text-sm max-w-md mx-auto">
             {isCantina && location.pathname == "/restaurante" && (
               <div>
                 <button
