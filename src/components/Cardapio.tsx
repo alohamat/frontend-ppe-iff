@@ -163,6 +163,7 @@ export default function Cardapio({
       {loading ? (
         <h1>Carregando...</h1>
       ) : (
+        
         <div className="w-full flex">
           <div className="relative border-4 border-green-500 rounded-md p-3 shadow-sm text-sm max-w-md mx-auto mb-5">
             {isCantina && location.pathname == "/restaurante" && (
