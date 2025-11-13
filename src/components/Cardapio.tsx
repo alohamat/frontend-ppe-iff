@@ -67,7 +67,7 @@ export default function Cardapio({
       <div className="flex flex-col gap-3 p-3 bg-gray-50 rounded-lg border border-green-700 shadow-md">
         <span className="text-green-800 font-semibold text-center">
           Tem certeza que deseja apagar este cardápio?
-        </span>
+        </span> 
         <div className="flex justify-center gap-4 mt-2">
           <button
             className="bg-green-700 hover:bg-green-800 text-white px-4 py-1 rounded font-bold transition-colors"
@@ -147,7 +147,7 @@ export default function Cardapio({
             {tipo === "almoco" ? (
               <span>{r.comida ?? "—"}</span>
               ) : (
-              <div className="flex flex-col ml-4">
+              <div className="flex flex-col ml-4 break-words">
                 <span> <strong> Comida: </strong> {r.comida ?? "—"}</span>
                 <span> <strong> Bebida: </strong> {r.bebida ?? "—"}</span>
               </div>
@@ -163,8 +163,8 @@ export default function Cardapio({
       {loading ? (
         <h1>Carregando...</h1>
       ) : (
-        <div className="w-full">
-          <div className="relative border-4 border-green-500 rounded-md p-3 shadow-sm text-sm max-w-md mx-auto">
+        <div className="w-full flex">
+          <div className="relative border-4 border-green-500 rounded-md p-3 shadow-sm text-sm max-w-md mx-auto mb-5">
             {isCantina && location.pathname == "/restaurante" && (
               <div>
                 <button
@@ -183,7 +183,7 @@ export default function Cardapio({
               </div>
             )}
             <h2 className="text-center mb-3 font-semibold">
-              Cardápio do dia {formatarData(cardapio.dia)}
+              {formatarData(cardapio.dia)}
             </h2>
 
             {renderRefeicoes("cafe", "Café da Manhã", BreakfastIcon)}
