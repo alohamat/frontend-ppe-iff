@@ -29,7 +29,6 @@ function AboutPage() {
                         </ul>
                     </div>
                 </div>
-            <hr />
                 <h1 className="text-4xl text-green-700 font-bold mb-10">Alunos Colaboradores</h1>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
@@ -82,9 +81,6 @@ function AboutPage() {
                         </div>
                     </div>
                 </div>
-
-        <hr />
-
                 <h1 className="text-4xl text-green-700 font-bold m-10">Servidores Colaboradores</h1>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
 
