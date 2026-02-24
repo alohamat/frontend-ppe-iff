@@ -21,7 +21,7 @@ function RootPage() {
         {/* servicoes full width no mobile/tablet, metade no desktop */}
         <div
           id="servicosContainer"
-          className="flex flex-col items-center gap-10 bg-gradient-to-b from-green-800/50 to-gray-700/50p-6 w-full lg:w-1/2"
+          className="flex flex-col items-center gap-10 bg-gradient-to-b from-green-800/50 to-gray-700/50 p-6 w-full lg:w-1/2"
         >
           <h1 className="text-2xl md:text-4xl font-bold mt-2 text-black/55">
             Outros Serviços

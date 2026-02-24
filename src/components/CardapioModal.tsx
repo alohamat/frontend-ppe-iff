@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-
 import { toast } from "react-toastify";
 
 // Tipos
@@ -47,59 +46,71 @@ export default function CardapioModal({
   const [jantaComida, setJantaComida] = useState("");
   const [jantaBebida, setJantaBebida] = useState("");
 
-  // Inicializa campos apenas quando initialData mudar
+  // Inicializa campos quando initialData mudar
   useEffect(() => {
     if (initialData) {
-      // Preenche com dados existentes
+      console.log("DADOS COMPLETOS RECEBIDOS:", initialData);
+      console.log("TODAS AS REFEIÇÕES:", initialData.refeicoes);
+      
+      // Preenche data
       setDateInput(initialData.data || "");
 
-      // Helper para buscar refeicao por tipo
-      const find = (tipo: Refeicao["tipo_refeicao"], subtipo?: string) =>
-        initialData.refeicoes.find((r) => {
-          if (r.tipo_refeicao !== tipo) return false;
-          if (subtipo) return (r.subtipo || "").toLowerCase() === subtipo.toLowerCase();
-          return true;
-        });
-
       // Café
-      const cafe = find("cafe");
+      const cafe = initialData.refeicoes.find(r => r.tipo_refeicao === "cafe");
+      console.log("CAFÉ:", cafe);
       setCafeComida(cafe?.comida || "");
       setCafeBebida(cafe?.bebida || "");
 
-      // Almoço por subtipo
-      const entradaR = find("almoco", "entrada");
-      const acompanhamentosR = find("almoco", "acompanhamentos");
-      const pratoR = find("almoco", "prato principal");
-      const guarnicaoR = find("almoco", "guarnicao");
-      const sucoR = find("almoco", "suco");
-      const frutaR = find("almoco", "sobremesa") || find("almoco", "fruta");
-
-      setEntrada(entradaR?.comida || "");
-      setAcompanhamentos(acompanhamentosR?.comida || "");
-      setPratoPrincipal(pratoR?.comida || "");
-      setGuarnicao(guarnicaoR?.comida || "");
-      setSuco(sucoR?.comida || "");
-      setFruta(frutaR?.comida || "");
+      // Almoço - CORRIGIDO: Buscar pelo subtipo correto
+      const todosAlmoco = initialData.refeicoes.filter(r => r.tipo_refeicao === "almoco");
+      console.log("TODOS OS ITENS DO ALMOÇO:", todosAlmoco);
+      
+      // Mapear pelo subtipo
+      todosAlmoco.forEach(item => {
+        switch(item.subtipo) {
+          case "entrada":
+            setEntrada(item.comida || "");
+            break;
+          case "acompanhamentos":
+            setAcompanhamentos(item.comida || "");
+            break;
+          case "prato principal":
+            setPratoPrincipal(item.comida || "");
+            break;
+          case "guarnicao":
+            setGuarnicao(item.comida || "");
+            break;
+          case "suco":
+            setSuco(item.comida || "");
+            break;
+          case "sobremesa":
+            setFruta(item.comida || "");
+            break;
+          default:
+            // Caso algum item não tenha subtipo definido
+            console.warn("Subtipo não reconhecido:", item.subtipo);
+        }
+      });
 
       // Lanche
-      const lanche = find("lanche");
+      const lanche = initialData.refeicoes.find(r => r.tipo_refeicao === "lanche");
       setLancheComida(lanche?.comida || "");
       setLancheBebida(lanche?.bebida || "");
 
       // Janta
-      const janta = find("jantar");
+      const janta = initialData.refeicoes.find(r => r.tipo_refeicao === "jantar");
       setJantaComida(janta?.comida || "");
       setJantaBebida(janta?.bebida || "");
+
     } else {
       // Modo create -> limpa tudo
       resetFields();
     }
-  }, [initialData]); // Agora só depende de initialData, não de isOpen
+  }, [initialData]);
 
   // Reset separado para quando fechar o modal
   useEffect(() => {
     if (!isOpen) {
-      // Só reseta quando o modal fechar completamente
       setTimeout(() => {
         resetFields();
       }, 300);
@@ -124,9 +135,10 @@ export default function CardapioModal({
 
   const buildPayload = (): Payload | null => {
     if (!dateInput) {
-    toast.error("Escolha a data do cardápio.", { position: "top-right" });
-    return null;
+      toast.error("Escolha a data do cardápio.", { position: "top-right" });
+      return null;
     }
+    
     const refeicoes: Refeicao[] = [];
 
     // Café
@@ -138,26 +150,60 @@ export default function CardapioModal({
       });
     }
 
-    // Almoço (6 partes)
-    const almocoParts = [
-      { subtipo: "entrada", value: entrada },
-      { subtipo: "acompanhamentos", value: acompanhamentos },
-      { subtipo: "prato principal", value: pratoPrincipal },
-      { subtipo: "guarnicao", value: guarnicao },
-      { subtipo: "suco", value: suco },
-      { subtipo: "sobremesa", value: fruta },
-    ];
-
-    almocoParts.forEach((part) => {
-      if (part.value && part.value.trim()) {
-        refeicoes.push({
-          tipo_refeicao: "almoco",
-          subtipo: part.subtipo,
-          comida: part.value.trim(),
-          bebida: part.subtipo === "suco" ? part.value.trim() : "—",
-        });
-      }
-    });
+    // Almoço - CORRIGIDO: usar subtipos consistentes
+    if (entrada.trim()) {
+      refeicoes.push({
+        tipo_refeicao: "almoco",
+        subtipo: "entrada",
+        comida: entrada.trim(),
+        bebida: "—",
+      });
+    }
+    
+    if (acompanhamentos.trim()) {
+      refeicoes.push({
+        tipo_refeicao: "almoco",
+        subtipo: "acompanhamentos",
+        comida: acompanhamentos.trim(),
+        bebida: "—",
+      });
+    }
+    
+    if (pratoPrincipal.trim()) {
+      refeicoes.push({
+        tipo_refeicao: "almoco",
+        subtipo: "prato principal",
+        comida: pratoPrincipal.trim(),
+        bebida: "—",
+      });
+    }
+    
+    if (guarnicao.trim()) {
+      refeicoes.push({
+        tipo_refeicao: "almoco",
+        subtipo: "guarnicao",
+        comida: guarnicao.trim(),
+        bebida: "—",
+      });
+    }
+    
+    if (suco.trim()) {
+      refeicoes.push({
+        tipo_refeicao: "almoco",
+        subtipo: "suco",
+        comida: suco.trim(),
+        bebida: suco.trim(), // Para suco, bebida = comida
+      });
+    }
+    
+    if (fruta.trim()) {
+      refeicoes.push({
+        tipo_refeicao: "almoco",
+        subtipo: "sobremesa",
+        comida: fruta.trim(),
+        bebida: "—",
+      });
+    }
 
     // Lanche
     if (lancheComida.trim()) {
@@ -189,16 +235,14 @@ export default function CardapioModal({
     const payload = buildPayload();
     if (!payload) return;
 
-    console.log("📤 Enviando payload:", payload); // Debug
-    console.log("🔧 Modo:", mode); // Debug
-    console.log("🆔 ID:", initialData?._id); // Debug
+    console.log("Enviando payload:", payload);
+    console.log("Modo:", mode);
+    console.log("ID:", initialData?._id);
 
     // Passa o ID se estiver no modo edição
     const id = mode === "edit" ? initialData?._id : undefined;
     
     onSubmit(payload, id);
-
-    // Não reseta imediatamente - deixa o modal fechar naturalmente
   };
 
   if (!isOpen) return null;
@@ -238,20 +282,48 @@ export default function CardapioModal({
         {/* Almoço */}
         <div className="mb-4">
           <h3 className="font-semibold mb-2">Almoço</h3>
-          {["Entrada", "Acompanhamentos", "Prato Principal", "Guarnição", "Suco", "Fruta"].map((label, i) => {
-            const setters = [setEntrada, setAcompanhamentos, setPratoPrincipal, setGuarnicao, setSuco, setFruta];
-            const values = [entrada, acompanhamentos, pratoPrincipal, guarnicao, suco, fruta];
-            return (
-              <input
-                key={i}
-                type="text"
-                value={values[i]}
-                onChange={(e) => setters[i](e.target.value)}
-                placeholder={label}
-                className="border rounded px-2 py-1 w-full mb-2"
-              />
-            );
-          })}
+          <input
+            type="text"
+            value={entrada}
+            onChange={(e) => setEntrada(e.target.value)}
+            placeholder="Entrada"
+            className="border rounded px-2 py-1 w-full mb-2"
+          />
+          <input
+            type="text"
+            value={acompanhamentos}
+            onChange={(e) => setAcompanhamentos(e.target.value)}
+            placeholder="Acompanhamentos"
+            className="border rounded px-2 py-1 w-full mb-2"
+          />
+          <input
+            type="text"
+            value={pratoPrincipal}
+            onChange={(e) => setPratoPrincipal(e.target.value)}
+            placeholder="Prato Principal"
+            className="border rounded px-2 py-1 w-full mb-2"
+          />
+          <input
+            type="text"
+            value={guarnicao}
+            onChange={(e) => setGuarnicao(e.target.value)}
+            placeholder="Guarnição"
+            className="border rounded px-2 py-1 w-full mb-2"
+          />
+          <input
+            type="text"
+            value={suco}
+            onChange={(e) => setSuco(e.target.value)}
+            placeholder="Suco"
+            className="border rounded px-2 py-1 w-full mb-2"
+          />
+          <input
+            type="text"
+            value={fruta}
+            onChange={(e) => setFruta(e.target.value)}
+            placeholder="Sobremesa/Fruta"
+            className="border rounded px-2 py-1 w-full mb-2"
+          />
         </div>
 
         {/* Lanche */}
@@ -295,9 +367,7 @@ export default function CardapioModal({
         <div className="flex justify-end gap-2">
           <button
             className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
-            onClick={() => {
-              onClose();
-            }}
+            onClick={onClose}
           >
             Cancelar
           </button>

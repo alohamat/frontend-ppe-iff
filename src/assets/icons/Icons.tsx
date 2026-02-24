@@ -1,6 +1,6 @@
 type IconProps = {
   name: string;
-  className?: string; // estilo opcional
+  className?: string;
 };
 
 export function Icon({ name, className = "" }: IconProps) {
@@ -16,3 +16,4 @@ export const ExitIcon = () => <Icon name="logout" />;
 export const UserIcon = () => <Icon name="person" />;
 export const LockPersonIcon = () => <Icon name="lock_person" />
 export const RestaurantIcon = () => <Icon name="restaurant" />;
+export const FeedbackIcon = () => <Icon name="feedback" />;

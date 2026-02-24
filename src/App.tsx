@@ -6,6 +6,7 @@ import MainPage from "./pages/MainPage";
 import AdminPage from "./pages/AdminPage";
 import RestaurantePage from "./pages/RestaurantePage";
 import AboutPage from "./pages/AboutPage";
+import FormsPage from "./pages/FormsPage";
 
 import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
@@ -33,6 +34,7 @@ function App() {
       />
       <Routes>
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/feedback" element={<FormsPage />} />
         <Route path="*" element={<Navigate to="/main" replace />}/>
         <Route element={<PublicRoute />}>
           <Route path="/registro" element={<RegistroPage />} />

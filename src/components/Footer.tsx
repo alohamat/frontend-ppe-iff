@@ -8,6 +8,7 @@ import { ExitIcon } from "../assets/icons/Icons";
 import { UserIcon } from "../assets/icons/Icons";
 import { LockPersonIcon } from "../assets/icons/Icons";
 import { RestaurantIcon } from "../assets/icons/Icons";
+import { FeedbackIcon } from "../assets/icons/Icons";
 
 type FooterItemProps = {
   icon: JSX.Element;
@@ -37,7 +38,7 @@ function Footer() {
   const navigate = useNavigate();
 
   return (
-    <div className="flex items-center fixed bottom-0 pt-1 w-full bg-green-700 text-white justify-between">
+    <div className="flex items-center fixed bottom-0 pt-1 w-full bg-green-700 text-white justify-between z-50">
       <QuickLinks />
       {isAuthenticated && (
         <div className="flex items-center">
@@ -51,6 +52,7 @@ function Footer() {
           />
         </div>
       )}
+      <FooterItem icon={<FeedbackIcon />} label="Feedback" onClick={() => navigate("/feedback")} />
     </div>
   );
 }
