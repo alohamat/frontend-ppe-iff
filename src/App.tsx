@@ -6,7 +6,7 @@ import MainPage from "./pages/MainPage";
 import AdminPage from "./pages/AdminPage";
 import RestaurantePage from "./pages/RestaurantePage";
 import AboutPage from "./pages/AboutPage";
-import FormsPage from "./pages/FormsPage";
+import FormsPage from "./pages/FormsPage.tsx";
 
 import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
